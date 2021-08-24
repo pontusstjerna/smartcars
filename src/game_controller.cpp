@@ -33,6 +33,8 @@ void GameController::start_game()
 
   world = new World();
   view = new View(world);
+  // input_controller = InputController();
+
   try
   {
     view->init();
@@ -54,8 +56,9 @@ void GameController::run_game()
   // Game loop
   while (running)
   {
-    while (SDL_PollEvent(&event) != 0)
+    while (running && SDL_PollEvent(&event) != 0)
     {
+      input_controller.check_inputs(&event);
       running = event.type != SDL_QUIT;
     }
     view->update();

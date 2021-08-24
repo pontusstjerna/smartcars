@@ -3,6 +3,7 @@
 
 #include "World.h"
 #include "View.h"
+#include "input_controller.h"
 
 class GameController
 {
@@ -14,6 +15,7 @@ public:
 private:
   World *world;
   View *view;
+  InputController input_controller;
 
   void run_game();
 };
