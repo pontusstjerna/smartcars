@@ -33,6 +33,32 @@ void GameController::start_game()
 
   world = new World();
   view = new View(world);
-  view->init();
-  SDL_Delay(3000);
+  try
+  {
+    view->init();
+  }
+  catch (string error)
+  {
+    cout << error;
+    return;
+  }
+
+  run_game();
+}
+
+void GameController::run_game()
+{
+  SDL_Event event;
+  bool running = true;
+
+  // Game loop
+  while (running)
+  {
+    while (SDL_PollEvent(&event) != 0)
+    {
+      running = event.type != SDL_QUIT;
+    }
+    view->update();
+    SDL_Delay(10);
+  }
 }

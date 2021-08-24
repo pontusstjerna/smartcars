@@ -19,4 +19,21 @@ void View::init()
   {
     throw SDL_GetError();
   }
+
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  if (renderer == NULL)
+  {
+    throw SDL_GetError();
+  }
+
+  SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+}
+
+void View::update()
+{
+  // Clear screen
+  SDL_RenderClear(renderer);
+
+  // Render stuff on window
+  SDL_RenderPresent(renderer);
 }

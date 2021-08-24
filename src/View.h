@@ -11,6 +11,7 @@ public:
   ~View();
   void start();
   void init();
+  void update();
 
 private:
   World *world;

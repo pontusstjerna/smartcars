@@ -14,6 +14,8 @@ public:
 private:
   World *world;
   View *view;
+
+  void run_game();
 };
 
 #endif /* GAME_CONTROLLER */
