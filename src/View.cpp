@@ -2,10 +2,16 @@
 #include <iostream>
 #include <string>
 #include "SDL_utils.h"
+#include <algorithm>
 
 using namespace std;
 
-View::View(World *world) : world(world) {}
+View::View(World *world) : world(world)
+{
+  int world_width = world->get_track()->width;
+  int world_height = world->get_track()->height;
+  scale = min((float)WIDTH / (float)world_width, (float)HEIGHT / (float)world_height);
+}
 
 View::~View()
 {
@@ -17,7 +23,7 @@ void View::init()
 {
   string title = "Smart Cars";
 
-  SDL_utils::run_safe(SDL_CreateWindowAndRenderer(800, 600, 0, &window, &renderer));
+  SDL_utils::run_safe(SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer));
 }
 
 void View::update()
@@ -37,12 +43,13 @@ void View::draw_track()
 {
   SDL_SetRenderDrawColor(renderer, 50, 255, 50, SDL_ALPHA_OPAQUE);
 
-  auto segments = world->get_track()->segments;
-  int size = segments.size();
-
-  for (int i = 0; i < segments.size(); i++)
+  for (TrackSegment segment : world->get_track()->get_segments())
   {
-    auto segment = segments[i];
-    SDL_RenderDrawLine(renderer, segment.start.x, segment.start.y, segment.end.x, segment.end.y);
+    SDL_RenderDrawLine(
+        renderer,
+        (int)(segment.start.x * scale),
+        (int)(segment.start.y * scale),
+        (int)(segment.end.x * scale),
+        (int)(segment.end.y * scale));
   }
 }
