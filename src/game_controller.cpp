@@ -33,4 +33,6 @@ void GameController::start_game()
 
   world = new World();
   view = new View(world);
+  view->init();
+  SDL_Delay(3000);
 }
