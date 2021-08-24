@@ -3,13 +3,19 @@
 
 #include <vector>
 #include "TrackSegment.h"
+#include <string>
 
 using namespace std;
 
 class Track
 {
 public:
-  vector<TrackSegment> get_segments();
+  Track(string name);
+  Track();
+  const vector<TrackSegment> segments;
+
+private:
+  vector<TrackSegment> create_track(string name);
 };
 
 #endif /* TRACK */

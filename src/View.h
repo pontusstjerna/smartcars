@@ -17,6 +17,8 @@ private:
   World *world;
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;
+
+  void draw_track();
 };
 
 #endif /* VIEW */

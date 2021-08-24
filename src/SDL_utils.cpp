@@ -8,6 +8,6 @@ void SDL_utils::run_safe(int result)
 {
   if (result != 0)
   {
-    throw string(SDL_GetError());
+    throw "SDL error: " + string(SDL_GetError()) + "\n";
   }
 }

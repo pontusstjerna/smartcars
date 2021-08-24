@@ -6,12 +6,12 @@
 class World
 {
 public:
-  Track get_track();
+  Track *get_track();
   World();
   ~World();
 
 private:
-  Track track;
+  Track *track;
 };
 
 #endif /* WORLD */
