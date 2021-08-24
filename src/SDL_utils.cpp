@@ -1,10 +1,13 @@
 #include "SDL_utils.h"
+#include <string>
 #include <SDL2/SDL.h>
 
-void SDL_utils::exec(int (*function)(Uint32))
+using namespace std;
+
+void SDL_utils::run_safe(int result)
 {
-  if (function(1) == -1)
+  if (result != 0)
   {
-    throw SDL_GetError();
+    throw string(SDL_GetError());
   }
 }

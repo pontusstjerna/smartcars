@@ -34,7 +34,7 @@ $(OBJ_DIR):
 
 game: $(OBJ_FILES)
 	@echo Linking...
-	$(CC) $(SYS_FLAGS) -g $^ $(LDFLAGS) -o game
+	$(CC) -std=c++17 $(SYS_FLAGS) -g $^ $(LDFLAGS) -o game
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/*/%.cpp
 	$(CC) -c -o $@ -g $< $(CPPFLAGS)
