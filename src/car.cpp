@@ -5,6 +5,12 @@
 
 #include "car.h"
 
+/*
+TODO: Real car physics. 
+https://www.emanueleferonato.com/2009/04/06/two-ways-to-make-box2d-cars/
+
+*/
+
 using namespace std;
 
 Car::Car(b2World *phys_world, float x, float y, float rot)

@@ -7,6 +7,7 @@
 #include <algorithm>
 
 using namespace std;
+using namespace SDL_utils;
 
 View::View(World *world) : world(world)
 {
@@ -25,10 +26,22 @@ void View::init()
 {
   string title = "Smart Cars";
 
-  // Exceptions catched in game_controller.cpp
-  SDL_utils::run_safe(SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer));
+  window = run_safe<SDL_Window *>(SDL_CreateWindow(
+      title.c_str(),
+      SDL_WINDOWPOS_UNDEFINED,
+      SDL_WINDOWPOS_UNDEFINED,
+      WIDTH,
+      HEIGHT,
+      SDL_WINDOW_SHOWN));
 
-  car_texture = SDL_utils::load_texture(renderer, "car");
+  renderer = run_safe<SDL_Renderer *>(SDL_CreateRenderer(
+      window,
+      -1,
+      SDL_RENDERER_ACCELERATED));
+
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
+  car_texture = load_texture(renderer, "car");
 }
 
 void View::update()
