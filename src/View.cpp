@@ -1,16 +1,18 @@
-#include "View.h"
+#include "view.h"
+#include "SDL_utils.h"
+#include "texture_sizes.h"
+
 #include <iostream>
 #include <string>
-#include "SDL_utils.h"
 #include <algorithm>
 
 using namespace std;
 
 View::View(World *world) : world(world)
 {
-  int world_width = world->get_track()->width;
-  int world_height = world->get_track()->height;
-  scale = min((float)WIDTH / (float)world_width, (float)HEIGHT / (float)world_height);
+  float world_width = world->get_track()->width;
+  float world_height = world->get_track()->height;
+  scale = min((float)WIDTH / world_width, (float)HEIGHT / world_height);
 }
 
 View::~View()
@@ -23,7 +25,10 @@ void View::init()
 {
   string title = "Smart Cars";
 
+  // Exceptions catched in game_controller.cpp
   SDL_utils::run_safe(SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer));
+
+  car_texture = SDL_utils::load_texture(renderer, "car");
 }
 
 void View::update()
@@ -34,6 +39,8 @@ void View::update()
   SDL_RenderClear(renderer);
 
   draw_track();
+
+  draw_cars();
 
   // Render stuff on window
   SDL_RenderPresent(renderer);
@@ -51,5 +58,30 @@ void View::draw_track()
         (int)(segment.start.y * scale),
         (int)(segment.end.x * scale),
         (int)(segment.end.y * scale));
+  }
+}
+
+void View::draw_cars()
+{
+  for (auto car : world->get_cars())
+  {
+    SDL_Rect source_rect = {0,
+                            0,
+                            TextureSizes::CAR_WIDTH,
+                            TextureSizes::CAR_HEIGHT};
+
+    SDL_Rect destination_rect = {(int)(car.get_x() * scale),
+                                 (int)(car.get_y() * scale),
+                                 (int)(car.width * scale),
+                                 (int)(car.length * scale)};
+
+    SDL_RenderCopyEx(
+        renderer,
+        car_texture,
+        &source_rect,
+        &destination_rect,
+        (double)(car.get_rot()),
+        NULL,
+        SDL_FLIP_NONE);
   }
 }

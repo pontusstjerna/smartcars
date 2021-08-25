@@ -2,7 +2,7 @@
 #define TRACK
 
 #include <vector>
-#include "TrackSegment.h"
+#include "track_segment.h"
 #include <string>
 
 using namespace std;
@@ -13,7 +13,7 @@ public:
   Track(string name);
   Track();
 
-  const int width, height;
+  const float width, height;
 
   vector<TrackSegment> get_segments();
 

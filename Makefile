@@ -12,15 +12,16 @@ else
 endif
 
 ifeq ($(OS), Windows_NT)
-	
+	PLATFORM_LDFLAGS := -lmingw32
 else
 	SYS_FLAGS=-pthread
 endif
 
 CC=g++
 
-LDFLAGS=-L$(L_DIR) -lSDL2 -lSDL2_image -lSDL2main -lbox2d 
-CPPFLAGS=-std=c++17 -I$(I_DIR)
+LDFLAGS=-L$(L_DIR) $(PLATFORM_LDFLAGS) -lSDL2main -lSDL2 -lSDL2_image -lbox2d 
+IFLAGS=-I$(I_DIR)
+CPPFLAGS=-std=c++17 
 
 all: print directories game
 
@@ -34,13 +35,13 @@ $(OBJ_DIR):
 
 game: $(OBJ_FILES)
 	@echo Linking...
-	$(CC) -std=c++17 $(SYS_FLAGS) -g $^ $(LDFLAGS) -o game
+	$(CC) $(CPPFLAGS) $(SYS_FLAGS) -g $^ $(LDFLAGS) -o game
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/*/%.cpp
-	$(CC) -c -o $@ -g $< $(CPPFLAGS)
+	$(CC) -c $(CPPFLAGS) -o $@ -g $< $(IFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) -c -o $@ -g $< $(CPPFLAGS)
+	$(CC) -c $(CPPFLAGS) -o $@ -g $< $(IFLAGS)
 
 .PHONY: clean directories
 

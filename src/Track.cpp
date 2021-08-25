@@ -1,6 +1,6 @@
-#include "Track.h"
+#include "track.h"
 
-Track::Track(string name) : width(80), height(60)
+Track::Track(string name) : width(40), height(30)
 {
   segments = create_track(name);
 }

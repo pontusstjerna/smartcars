@@ -1,5 +1,5 @@
-#ifndef TRACKSEGMENT
-#define TRACKSEGMENT
+#ifndef TRACK_SEGMENT
+#define TRACK_SEGMENT
 
 #include "Point.h"
 
@@ -11,4 +11,4 @@ struct TrackSegment
   TrackSegment(TrackSegment prev, Point next) : TrackSegment(prev.end, next) {}
 };
 
-#endif /* TRACKSEGMENT */
+#endif /* TRACK_SEGMENT */
