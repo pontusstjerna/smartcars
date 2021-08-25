@@ -13,6 +13,7 @@ GameController::~GameController()
   cout << "Quitting game...";
   delete view;
   delete world;
+  delete input_controller;
   SDL_Quit();
   cout << "done!";
 }
@@ -33,7 +34,7 @@ void GameController::start_game()
 
   world = new World();
   view = new View(world);
-  // input_controller = InputController();
+  input_controller = new InputController(world->get_cars().front());
 
   try
   {
@@ -62,7 +63,7 @@ void GameController::run_game()
   {
     while (running && SDL_PollEvent(&event) != 0)
     {
-      input_controller.check_inputs(&event);
+      input_controller->check_inputs(&event);
       running = event.type != SDL_QUIT;
     }
 

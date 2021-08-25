@@ -15,7 +15,7 @@ public:
 private:
   World *world;
   View *view;
-  InputController input_controller;
+  InputController *input_controller;
 
   void run_game();
 };

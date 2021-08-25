@@ -70,17 +70,17 @@ void View::draw_cars()
                             TextureSizes::CAR_WIDTH,
                             TextureSizes::CAR_HEIGHT};
 
-    SDL_Rect destination_rect = {(int)(car.get_x() * scale),
-                                 (int)(car.get_y() * scale),
-                                 (int)(car.width * scale),
-                                 (int)(car.length * scale)};
+    SDL_Rect destination_rect = {(int)(car->get_x() * scale),
+                                 (int)(car->get_y() * scale),
+                                 (int)(car->width * scale),
+                                 (int)(car->length * scale)};
 
     SDL_RenderCopyEx(
         renderer,
         car_texture,
         &source_rect,
         &destination_rect,
-        (double)(car.get_rot()),
+        (double)(car->get_rot()),
         NULL,
         SDL_FLIP_NONE);
   }

@@ -17,12 +17,12 @@ public:
 
   void update(float d_time);
   Track *get_track();
-  vector<Car> get_cars();
+  vector<Car *> get_cars();
 
 private:
   b2World *phys_world;
   Track *track;
-  vector<Car> cars;
+  vector<Car *> cars;
 
   float timestep = 1.0f / 60.0f;
   float accumulator = 0;
