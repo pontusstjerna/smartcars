@@ -6,7 +6,7 @@
 class Car
 {
 public:
-  Car(float x, float y, float rot);
+  Car(b2World *phys_world, float x, float y, float rot);
   ~Car();
 
   // 1.95 meter wide, 2 meters long

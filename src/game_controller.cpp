@@ -53,6 +53,10 @@ void GameController::run_game()
   SDL_Event event;
   bool running = true;
 
+  float d_time = 0;
+  float current_time = 0;
+  float prev_time = 0;
+
   // Game loop
   while (running)
   {
@@ -61,7 +65,14 @@ void GameController::run_game()
       input_controller.check_inputs(&event);
       running = event.type != SDL_QUIT;
     }
+
+    world->update(d_time);
     view->update();
+
     SDL_Delay(10);
+
+    current_time = SDL_GetTicks() / 1000.0f;
+    d_time = current_time - prev_time;
+    prev_time = current_time;
   }
 }
