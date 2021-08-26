@@ -16,17 +16,17 @@ vector<TrackSegment> Track::create_track(string name, b2World *phys_world)
 {
   if (name == "default")
   {
-    vector<Point> points = {
-        Point(5, height - 5),
-        Point(4 * width / 5, height - 5),
-        Point(4 * width / 5, height / 3),
-        Point(width / 2, height / 3),
-        Point(5, 8)};
-    TrackSegment segment = TrackSegment(
-        points,
-        phys_world,
-        Point(0, height - 5),
-        Point(5, 5));
-    return {segment};
+    vector<Point> outer_points = {
+        Point(1, 1),
+        Point(1, height - 1),
+        Point(width - 1, height - 1),
+        Point(width - 1, height / 2),
+        Point(15, height / 2),
+        Point(15, (height / 2) - 1),
+        Point(width - 1, (height / 2) - 1),
+        Point(width - 1, 1),
+        Point(1, 1)};
+    TrackSegment segment = TrackSegment(outer_points, phys_world);
+    return vector<TrackSegment>{segment};
   }
 }

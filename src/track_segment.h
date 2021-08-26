@@ -9,7 +9,11 @@
 class TrackSegment
 {
 public:
+  // For standalone segments
   TrackSegment(std::vector<Point>, b2World *phys_world, Point prev_ghost, Point next_ghost);
+
+  // For loop segments
+  TrackSegment(std::vector<Point>, b2World *phys_world);
 
   std::vector<Point> get_points();
 
@@ -17,6 +21,9 @@ public:
 
 private:
   std::vector<Point> points;
+
+  void create_segment(b2ChainShape *chain_shape, b2World *phys_world);
+  void create_vertices(b2Vec2 *arr, std::vector<Point> points);
 };
 
 #endif /* TRACK_SEGMENT */
