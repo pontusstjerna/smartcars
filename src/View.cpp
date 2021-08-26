@@ -65,12 +65,16 @@ void View::draw_track()
 
   for (TrackSegment segment : world->get_track()->get_segments())
   {
-    SDL_RenderDrawLine(
-        renderer,
-        (int)(segment.start.x * scale),
-        (int)(segment.start.y * scale),
-        (int)(segment.end.x * scale),
-        (int)(segment.end.y * scale));
+    auto points = segment.get_points();
+    for (int i = 0; i < points.size() - 1; i++)
+    {
+      SDL_RenderDrawLine(
+          renderer,
+          (int)(points[i].x * scale),
+          HEIGHT - (int)(points[i].y * scale),
+          (int)(points[i + 1].x * scale),
+          HEIGHT - (int)(points[i + 1].y * scale));
+    }
   }
 }
 
@@ -83,8 +87,8 @@ void View::draw_cars()
                             TextureSizes::CAR_WIDTH,
                             TextureSizes::CAR_HEIGHT};
 
-    SDL_Rect destination_rect = {(int)(car->get_x() * scale),
-                                 (int)(car->get_y() * scale),
+    SDL_Rect destination_rect = {(int)((car->get_x() - car->width / 2) * scale),
+                                 HEIGHT - (int)((car->get_y() + car->length / 2) * scale),
                                  (int)(car->width * scale),
                                  (int)(car->length * scale)};
 

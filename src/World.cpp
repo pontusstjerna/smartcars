@@ -5,7 +5,7 @@ World::World()
   b2Vec2 gravity(0.0f, 0.0f);
   phys_world = new b2World(gravity);
 
-  track = new Track();
+  track = new Track(phys_world);
   cars = {new Car(phys_world, 5, 5, 0)};
 }
 

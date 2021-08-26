@@ -58,8 +58,7 @@ void Car::update(float d_time)
   }
 
   float angle = body->GetAngle();
-  // Swap y-coordinates (in SDL y-axis is flipped in comparison to box2d)
-  body->SetLinearVelocity(b2Vec2(velocity * sin(angle), -velocity * cos(angle)));
+  body->SetLinearVelocity(b2Vec2(velocity * sin(angle), velocity * cos(angle)));
 
   if (abs(velocity) > min_turn_velocity)
   {
