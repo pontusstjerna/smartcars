@@ -1,7 +1,9 @@
 #ifndef VIEW
 #define VIEW
 
-#include "World.h"
+#include "world.h"
+#include "point.h"
+
 #include <SDL2/SDL.h>
 
 class View
@@ -26,6 +28,7 @@ private:
 
   void draw_track();
   void draw_cars();
+  void render_line(Point start, Point end);
 };
 
 #endif /* VIEW */

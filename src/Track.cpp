@@ -4,20 +4,29 @@
 
 Track::Track(string name, b2World *phys_world) : width(40), height(30)
 {
-  segments = create_track(name, phys_world);
+  create_track(name, phys_world);
 }
 
 Track::Track(b2World *phys_world) : Track("default", phys_world) {}
+
+Track::~Track()
+{
+  delete goal_line;
+  segments.clear();
+}
 
 vector<TrackSegment> Track::get_segments()
 {
   return segments;
 }
 
-vector<TrackSegment> Track::create_track(string name, b2World *phys_world)
+GoalLine *Track::get_goal_line()
 {
-  float track_width = 5;
+  return goal_line;
+}
 
+void Track::create_track(string name, b2World *phys_world)
+{
   if (name == "default")
   {
     vector<Point> outer_points = {
@@ -33,7 +42,9 @@ vector<TrackSegment> Track::create_track(string name, b2World *phys_world)
 
     vector<Point> inner_points = create_inner_points(outer_points);
 
-    return vector<TrackSegment>{
+    goal_line = new GoalLine(outer_points[0].add(track_width, 0), inner_points[0], phys_world);
+
+    segments = vector<TrackSegment>{
         TrackSegment(outer_points, phys_world),
         TrackSegment(inner_points, phys_world)};
   }
@@ -42,8 +53,6 @@ vector<TrackSegment> Track::create_track(string name, b2World *phys_world)
 // This is a test for the future when auto-generating tracks
 vector<Point> Track::create_inner_points(vector<Point> outer_points)
 {
-  float track_width = 6;
-
   vector<Point> inner_points;
   for (int i = 0; i < outer_points.size(); i++)
   {
@@ -51,8 +60,8 @@ vector<Point> Track::create_inner_points(vector<Point> outer_points)
     Point outer = outer_points[i];
     Point next_outer = i < outer_points.size() - 1 ? outer_points[i + 1] : outer_points[0];
 
-    float next_heading = atan2(next_outer.x - outer.x, next_outer.y - outer.y);
-    float prev_heading = atan2(outer.x - prev_outer.x, outer.y - prev_outer.y);
+    float next_heading = outer.get_heading(next_outer);
+    float prev_heading = prev_outer.get_heading(outer);
 
     // This formula is written in bug blood
     inner_points.insert(

@@ -68,14 +68,14 @@ void View::draw_track()
     auto points = segment.get_points();
     for (int i = 0; i < points.size() - 1; i++)
     {
-      SDL_RenderDrawLine(
-          renderer,
-          (int)(points[i].x * scale),
-          HEIGHT - (int)(points[i].y * scale),
-          (int)(points[i + 1].x * scale),
-          HEIGHT - (int)(points[i + 1].y * scale));
+      render_line(points[i], points[i + 1]);
     }
   }
+
+  SDL_SetRenderDrawColor(renderer, 255, 50, 50, SDL_ALPHA_OPAQUE);
+
+  auto goal_line = world->get_track()->get_goal_line();
+  render_line(goal_line->start, goal_line->end);
 }
 
 void View::draw_cars()
@@ -101,4 +101,14 @@ void View::draw_cars()
         NULL,
         SDL_FLIP_NONE);
   }
+}
+
+void View::render_line(Point start, Point end)
+{
+  SDL_RenderDrawLine(
+      renderer,
+      (int)(start.x * scale),
+      HEIGHT - (int)(start.y * scale),
+      (int)(end.x * scale),
+      HEIGHT - (int)(end.y * scale));
 }
