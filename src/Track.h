@@ -20,8 +20,10 @@ public:
   vector<TrackSegment> get_segments();
 
 private:
-  vector<TrackSegment> create_track(string name, b2World *phys_world);
   vector<TrackSegment> segments;
+
+  vector<TrackSegment> create_track(string name, b2World *phys_world);
+  vector<Point> create_inner_points(vector<Point> outer_points);
 };
 
 #endif /* TRACK */
