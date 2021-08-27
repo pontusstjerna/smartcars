@@ -6,7 +6,7 @@ World::World()
   phys_world = new b2World(gravity);
 
   track = new Track(phys_world);
-  cars = {new Car(phys_world, 5, 5, 0)};
+  cars = {new Car(phys_world, 2.2, 2.2, 0), new Car(phys_world, 5, 2.2, 0)};
 }
 
 World::~World()

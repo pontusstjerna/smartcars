@@ -4,15 +4,18 @@
 #include "car.h"
 
 #include <SDL2/SDL.h>
+#include <vector>
+
+using namespace std;
 
 class InputController
 {
 public:
-  InputController(Car *car);
+  InputController(vector<Car *> human_cars);
   void check_inputs(SDL_Event *event);
 
 private:
-  Car *car;
+  vector<Car *> cars;
 };
 
 #endif /* INPUT_CONTROLLER */

@@ -34,7 +34,9 @@ void GameController::start_game()
 
   world = new World();
   view = new View(world);
-  input_controller = new InputController(world->get_cars().front());
+
+  // TODO: only get player controlled cars
+  input_controller = new InputController(world->get_cars());
 
   try
   {

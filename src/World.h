@@ -23,6 +23,9 @@ private:
   b2World *phys_world;
   Track *track;
   vector<Car *> cars;
+  vector<int> laps;
+
+  const int max_laps = 3;
 
   float timestep = 1.0f / 60.0f;
   float accumulator = 0;
