@@ -1,9 +1,12 @@
-#ifndef CAR
-#define CAR
+#ifndef CAR_H
+#define CAR_H
+
+#include "phys_object.h"
+#include "body_data.h"
 
 #include <box2d/box2d.h>
 
-class Car
+class Car : PhysObject
 {
 public:
   Car(b2World *phys_world, float x, float y, float rot);

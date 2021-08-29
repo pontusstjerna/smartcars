@@ -1,11 +1,12 @@
-#ifndef GOAL_LINE
-#define GOAL_LINE
+#ifndef GOAL_LINE_H
+#define GOAL_LINE_H
 
-#include "Point.h"
+#include "point.h"
+#include "phys_object.h"
 
 #include <box2d/box2d.h>
 
-class GoalLine
+class GoalLine : public PhysObject
 {
 public:
   GoalLine(Point start, Point end, b2World *phys_world);
@@ -14,4 +15,4 @@ public:
   const Point end;
 };
 
-#endif /* GOAL_LINE */
+#endif /* GOAL_LINE_H */

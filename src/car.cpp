@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "car.h"
-
+#include "body_data.h"
 /*
 TODO: Real car physics. 
 https://www.emanueleferonato.com/2009/04/06/two-ways-to-make-box2d-cars/
@@ -15,10 +15,12 @@ using namespace std;
 
 Car::Car(b2World *phys_world, float x, float y, float rot)
 {
+  body_data = BodyData(BodyType::CAR); // TODO: assign index
   // TODO: Create body with x, y and rot
   b2BodyDef bodyDef;
   bodyDef.type = b2_dynamicBody;
   bodyDef.position.Set(x, y);
+  bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(this);
 
   body = phys_world->CreateBody(&bodyDef);
 

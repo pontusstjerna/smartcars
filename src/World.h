@@ -3,6 +3,7 @@
 
 #include "track.h"
 #include "car.h"
+#include "contact_listener.h"
 
 #include <vector>
 #include <box2d/box2d.h>
@@ -24,6 +25,7 @@ private:
   Track *track;
   vector<Car *> cars;
   vector<int> laps;
+  ContactListener *contact_listener;
 
   const int max_laps = 3;
 
