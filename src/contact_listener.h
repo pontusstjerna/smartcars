@@ -15,7 +15,7 @@ public:
   void EndContact(b2Contact *contact);
 
 private:
-  bool is_potential_lap(b2Body *body_a, b2Body *body_b);
+  bool is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_begin);
   std::vector<bool> potential_laps;
   PhysObject *cast_to_phys_obj(b2Body *body);
   int try_get_car_index(b2Body *body_a, b2Body *body_b);

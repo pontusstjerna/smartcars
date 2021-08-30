@@ -20,7 +20,7 @@ void ContactListener::BeginContact(b2Contact *contact)
   b2Body *body_a = contact->GetFixtureA()->GetBody();
   b2Body *body_b = contact->GetFixtureB()->GetBody();
 
-  if (is_potential_lap(body_a, body_b))
+  if (is_potential_lap(body_a, body_b, true))
   {
     int car_index = try_get_car_index(body_a, body_b);
     if (car_index >= 0)
@@ -35,7 +35,7 @@ void ContactListener::EndContact(b2Contact *contact)
   b2Body *body_a = contact->GetFixtureA()->GetBody();
   b2Body *body_b = contact->GetFixtureB()->GetBody();
 
-  if (is_potential_lap(body_a, body_b))
+  if (is_potential_lap(body_a, body_b, false))
   {
     int car_index = try_get_car_index(body_a, body_b);
     if (car_index >= 0)
@@ -49,7 +49,7 @@ void ContactListener::EndContact(b2Contact *contact)
   }
 }
 
-bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b)
+bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_begin)
 {
 
   PhysObject *a = cast_to_phys_obj(body_a);
@@ -73,12 +73,28 @@ bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b)
     return false;
   }
 
-  float goal_line_heading = goal_line->start.get_heading(goal_line->end);
-  float car_heading = car_body->GetAngle();
+  b2Vec2 goal_line_vector = b2Vec2(goal_line->end.add(-goal_line->start.x, -goal_line->start.y).to_b2Vec2());
+  goal_line_vector.Normalize();
 
-  // cout << "Car heading: " << car_heading << " - goal line heading: " << goal_line_heading << endl;
+  // Vector relative from goal line start point
+  b2Vec2 goal_line_car_pos = car_body->GetPosition();
+  goal_line_car_pos -= goal_line->start.to_b2Vec2();
+  goal_line_car_pos.Normalize();
 
-  return car_heading > goal_line_heading + M_PI && car_heading < goal_line_heading + 2 * M_PI;
+  // Rotate 90 deg CCW
+  b2Vec2 goal_line_car_pos_rotated = b2Vec2(-goal_line_car_pos.y, goal_line_car_pos.x);
+
+  /* Dot product > 0 is if vector is "in front of us", i.e. car vel is in front of goal line.
+     By rotating the car's velocity 90 deg CCW we can calculate wether the vector is on the "right" or "left" side of goal line
+  */
+  float dot = goal_line_vector.x * goal_line_car_pos_rotated.x + goal_line_vector.y * goal_line_car_pos_rotated.y;
+
+  /*cout << (is_begin ? "Begin contact: " : "End contact: ");
+  cout << "Dot product of car x goal line is: " << dot << endl;
+  cout << "Goal line car pos vector: (" << goal_line_car_pos.x << ", " << goal_line_car_pos.y << ")\n";*/
+
+  // Beginning of contact? Car must be super close to center of goal line. End of contact? Must be to the left.
+  return is_begin ? dot > -0.1 : dot < 0;
 }
 
 PhysObject *ContactListener::cast_to_phys_obj(b2Body *body)
