@@ -27,7 +27,7 @@ private:
   vector<int> laps;
   ContactListener *contact_listener;
 
-  const int max_laps = 3;
+  static const int max_laps = 3;
 
   float timestep = 1.0f / 60.0f;
   float accumulator = 0;

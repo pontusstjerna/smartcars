@@ -10,7 +10,7 @@
 
 using namespace std;
 
-ContactListener::ContactListener(int n_cars)
+ContactListener::ContactListener(int n_cars, function<void(int)> on_lap) : on_lap(on_lap)
 {
   potential_laps = vector<bool>(n_cars, false);
 }
@@ -56,7 +56,7 @@ void ContactListener::EndContact(b2Contact *contact)
       if (potential_laps[car_index])
       {
         potential_laps[car_index] = false;
-        cout << "We have a lap!\n";
+        on_lap(car_index);
       }
     }
   }
