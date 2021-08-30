@@ -63,9 +63,9 @@ void View::draw_track()
 {
   SDL_SetRenderDrawColor(renderer, 50, 255, 50, SDL_ALPHA_OPAQUE);
 
-  for (TrackSegment segment : world->get_track()->get_segments())
+  for (TrackSegment *segment : world->get_track()->get_segments())
   {
-    auto points = segment.get_points();
+    auto points = segment->get_points();
     for (int i = 0; i < points.size() - 1; i++)
     {
       render_line(points[i], points[i + 1]);

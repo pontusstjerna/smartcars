@@ -13,7 +13,6 @@ struct BodyData
   BodyType body_type;
   int index;
 
-  BodyData() {}
   BodyData(BodyType body_type, int index) : body_type(body_type), index(index) {}
   BodyData(BodyType body_type) : body_type(body_type), index(0) {}
 };

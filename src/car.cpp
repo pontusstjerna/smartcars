@@ -13,9 +13,13 @@ https://www.emanueleferonato.com/2009/04/06/two-ways-to-make-box2d-cars/
 
 using namespace std;
 
-Car::Car(b2World *phys_world, float x, float y, float rot)
+Car::Car(
+    float x,
+    float y,
+    float rot,
+    b2World *phys_world,
+    int index) : PhysObject(BodyData(BodyType::CAR, index))
 {
-  body_data = BodyData(BodyType::CAR); // TODO: assign index
   // TODO: Create body with x, y and rot
   b2BodyDef bodyDef;
   bodyDef.type = b2_dynamicBody;

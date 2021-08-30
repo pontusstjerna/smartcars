@@ -9,7 +9,7 @@
 class Car : PhysObject
 {
 public:
-  Car(b2World *phys_world, float x, float y, float rot);
+  Car(float x, float y, float rot, b2World *phys_world, int index);
   ~Car();
 
   // 1.95 meter wide, 2 meters long

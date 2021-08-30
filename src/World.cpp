@@ -7,9 +7,9 @@ World::World()
   phys_world = new b2World(gravity);
 
   track = new Track(phys_world);
-  cars = {new Car(phys_world, 2.2, 2.2, 0), new Car(phys_world, 5, 2.2, 0)};
+  cars = {new Car(2.2, 2.2, 0, phys_world, 0), new Car(5, 2.2, 0, phys_world, 1)};
 
-  contact_listener = new ContactListener();
+  contact_listener = new ContactListener(cars.size());
   phys_world->SetContactListener(contact_listener);
 }
 

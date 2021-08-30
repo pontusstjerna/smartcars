@@ -6,13 +6,12 @@
 class PhysObject
 {
 public:
-  BodyData get_body_data()
-  {
-    return body_data;
-  }
+  const BodyData body_data;
+
+  //virtual ~PhysObject() = 0;
 
 protected:
-  BodyData body_data;
+  PhysObject(BodyData body_data) : body_data(body_data) {}
 };
 
 #endif /* PHYS_OBJECT */

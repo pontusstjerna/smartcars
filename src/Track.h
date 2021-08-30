@@ -19,12 +19,12 @@ public:
 
   const float width, height;
 
-  vector<TrackSegment> get_segments();
+  vector<TrackSegment *> get_segments();
   GoalLine *get_goal_line();
 
 private:
   const float track_width = 6;
-  vector<TrackSegment> segments;
+  vector<TrackSegment *> segments;
   GoalLine *goal_line;
 
   void create_track(string name, b2World *phys_world);

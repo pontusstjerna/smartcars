@@ -22,7 +22,7 @@ struct Point
   }
 
   // Where 0 rad is straight north, PI / 2 is straight east etc
-  float get_heading(Point other)
+  float get_heading(Point other) const
   {
     return atan2(other.x - x, other.y - y);
   }

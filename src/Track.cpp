@@ -12,10 +12,14 @@ Track::Track(b2World *phys_world) : Track("default", phys_world) {}
 Track::~Track()
 {
   delete goal_line;
+  for (TrackSegment *segment : segments)
+  {
+    delete segment;
+  }
   segments.clear();
 }
 
-vector<TrackSegment> Track::get_segments()
+vector<TrackSegment *> Track::get_segments()
 {
   return segments;
 }
@@ -44,9 +48,9 @@ void Track::create_track(string name, b2World *phys_world)
 
     goal_line = new GoalLine(outer_points[0].add(track_width, 0), inner_points[0], phys_world);
 
-    segments = vector<TrackSegment>{
-        TrackSegment(outer_points, phys_world),
-        TrackSegment(inner_points, phys_world)};
+    segments = vector<TrackSegment *>{
+        new TrackSegment(outer_points, phys_world),
+        new TrackSegment(inner_points, phys_world)};
   }
 }
 

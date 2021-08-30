@@ -1,9 +1,8 @@
 #include "goal_line.h"
 #include "body_data.h"
 
-GoalLine::GoalLine(Point start, Point end, b2World *phys_world) : start(start), end(end)
+GoalLine::GoalLine(Point start, Point end, b2World *phys_world) : PhysObject(BodyData(BodyType::GOAL_LINE)), start(start), end(end)
 {
-  body_data = BodyData(BodyType::GOAL_LINE);
   b2BodyDef body_def;
   body_def.userData.pointer = reinterpret_cast<uintptr_t>(this);
   b2Body *body = phys_world->CreateBody(&body_def);

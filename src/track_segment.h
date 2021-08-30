@@ -1,12 +1,13 @@
-#ifndef TRACK_SEGMENT
-#define TRACK_SEGMENT
+#ifndef TRACK_SEGMENT_H
+#define TRACK_SEGMENT_H
 
 #include "Point.h"
+#include "phys_object.h"
 
 #include <vector>
 #include <box2d/box2d.h>
 
-class TrackSegment
+class TrackSegment : public PhysObject
 {
 public:
   // For standalone segments

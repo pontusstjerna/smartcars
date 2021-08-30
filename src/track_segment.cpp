@@ -2,7 +2,11 @@
 
 using namespace std;
 
-TrackSegment::TrackSegment(vector<Point> points, b2World *phys_world, Point prev_ghost, Point next_ghost) : points(points)
+TrackSegment::TrackSegment(
+    vector<Point> points,
+    b2World *phys_world,
+    Point prev_ghost,
+    Point next_ghost) : PhysObject(BodyData(BodyType::TRACK_SEGMENT)), points(points)
 {
   b2ChainShape shape;
   b2Vec2 vertices[points.size()];
@@ -13,7 +17,9 @@ TrackSegment::TrackSegment(vector<Point> points, b2World *phys_world, Point prev
   create_segment(&shape, phys_world);
 }
 
-TrackSegment::TrackSegment(vector<Point> points, b2World *phys_world) : points(points)
+TrackSegment::TrackSegment(
+    vector<Point> points,
+    b2World *phys_world) : PhysObject(BodyData(BodyType::TRACK_SEGMENT)), points(points)
 {
   b2ChainShape shape;
   b2Vec2 vertices[points.size()];
@@ -31,6 +37,7 @@ vector<Point> TrackSegment::get_points()
 void TrackSegment::create_segment(b2ChainShape *chain_shape, b2World *phys_world)
 {
   b2BodyDef body_def;
+  body_def.userData.pointer = reinterpret_cast<uintptr_t>(this);
   b2Body *body = phys_world->CreateBody(&body_def);
 
   b2FixtureDef fixture_def;
