@@ -15,19 +15,32 @@ ContactListener::ContactListener(int n_cars)
   potential_laps = vector<bool>(n_cars, false);
 }
 
-void ContactListener::BeginContact(b2Contact *contact)
+void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *old_manifold)
 {
   b2Body *body_a = contact->GetFixtureA()->GetBody();
   b2Body *body_b = contact->GetFixtureB()->GetBody();
 
   if (is_potential_lap(body_a, body_b, true))
   {
+    contact->SetEnabled(false);
     int car_index = try_get_car_index(body_a, body_b);
     if (car_index >= 0)
     {
       potential_laps[car_index] = true;
     }
   }
+  else
+  {
+    int car_index = try_get_car_index(body_a, body_b);
+    if (car_index >= 0 && potential_laps[car_index]) // Keep disabling until we've ended contact
+    {
+      contact->SetEnabled(false);
+    }
+  }
+}
+
+void ContactListener::BeginContact(b2Contact *contact)
+{
 }
 
 void ContactListener::EndContact(b2Contact *contact)
@@ -93,8 +106,8 @@ bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_b
   cout << "Dot product of car x goal line is: " << dot << endl;
   cout << "Goal line car pos vector: (" << goal_line_car_pos.x << ", " << goal_line_car_pos.y << ")\n";*/
 
-  // Beginning of contact? Car must be super close to center of goal line. End of contact? Must be to the left.
-  return is_begin ? dot > -0.1 : dot < 0;
+  // Beginning of contact? Car must be to the right of goal line. End of contact? Must be to the left.
+  return is_begin ? dot > 0 : dot < 0;
 }
 
 PhysObject *ContactListener::cast_to_phys_obj(b2Body *body)

@@ -11,6 +11,7 @@ class ContactListener : public b2ContactListener
 public:
   ContactListener(int n_cars);
 
+  void PreSolve(b2Contact *contact, const b2Manifold *old_manifold);
   void BeginContact(b2Contact *contact);
   void EndContact(b2Contact *contact);
 
