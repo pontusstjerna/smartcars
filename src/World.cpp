@@ -55,12 +55,12 @@ void World::update(float d_time)
   }
 }
 
-Track *World::get_track()
+Track *World::get_track() const
 {
   return track;
 }
 
-vector<Car *> World::get_cars()
+vector<Car *> World::get_cars() const
 {
   return cars;
 }

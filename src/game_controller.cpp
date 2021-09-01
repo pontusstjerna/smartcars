@@ -1,6 +1,8 @@
 #include "game_controller.h"
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include "SDL_utils.h"
 #include <string>
 
@@ -14,6 +16,8 @@ GameController::~GameController()
   delete view;
   delete world;
   delete input_controller;
+  TTF_Quit();
+  IMG_Quit();
   SDL_Quit();
   cout << "done!";
 }

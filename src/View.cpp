@@ -13,11 +13,18 @@ View::View(World *world) : world(world)
 {
   float world_width = world->get_track()->width;
   float world_height = world->get_track()->height;
-  scale = min((float)WIDTH / world_width, (float)HEIGHT / world_height);
+  scale = min((float)GAME_WIDTH / world_width, (float)HEIGHT / world_height);
+
+  // To enabling centering in the smaller (padded) axis
+  extra_x = (GAME_WIDTH - scale * world_width) / 2;
+  extra_y = (HEIGHT - scale * world_height) / 2;
 }
 
 View::~View()
 {
+  delete gui_view;
+
+  SDL_DestroyTexture(car_texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
 }
@@ -39,21 +46,26 @@ void View::init()
       -1,
       SDL_RENDERER_ACCELERATED));
 
+  gui_view = new GuiView(world, renderer);
+  gui_view->init();
+
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-  car_texture = load_texture(renderer, "car");
+  car_texture = load_texture(renderer, "car").texture;
 }
 
 void View::update()
 {
   SDL_SetRenderDrawColor(renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
 
-  // Clear screen
+  // Clear screen with above color
   SDL_RenderClear(renderer);
+
+  draw_cars();
 
   draw_track();
 
-  draw_cars();
+  gui_view->render();
 
   // Render stuff on window
   SDL_RenderPresent(renderer);
@@ -87,8 +99,8 @@ void View::draw_cars()
                             TextureSizes::CAR_WIDTH,
                             TextureSizes::CAR_HEIGHT};
 
-    SDL_Rect destination_rect = {(int)((car->get_x() - car->width / 2) * scale),
-                                 HEIGHT - (int)((car->get_y() + car->length / 2) * scale),
+    SDL_Rect destination_rect = {GUI_WIDTH + (int)((car->get_x() - car->width / 2) * scale) + extra_x,
+                                 HEIGHT - (int)((car->get_y() + car->length / 2) * scale) - extra_y,
                                  (int)(car->width * scale),
                                  (int)(car->length * scale)};
 
@@ -107,8 +119,8 @@ void View::render_line(Point start, Point end)
 {
   SDL_RenderDrawLine(
       renderer,
-      (int)(start.x * scale),
-      HEIGHT - (int)(start.y * scale),
-      (int)(end.x * scale),
-      HEIGHT - (int)(end.y * scale));
+      GUI_WIDTH + (int)(start.x * scale) + extra_x,
+      HEIGHT - (int)(start.y * scale) - extra_y,
+      GUI_WIDTH + (int)(end.x * scale) + extra_x,
+      HEIGHT - (int)(end.y * scale) - extra_y);
 }

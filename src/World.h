@@ -13,12 +13,14 @@ using namespace std;
 class World
 {
 public:
+  static const int max_laps = 3;
+
   World();
   ~World();
 
   void update(float d_time);
-  Track *get_track();
-  vector<Car *> get_cars();
+  Track *get_track() const;
+  vector<Car *> get_cars() const;
 
 private:
   b2World *phys_world;
@@ -26,8 +28,6 @@ private:
   vector<Car *> cars;
   vector<int> laps;
   ContactListener *contact_listener;
-
-  static const int max_laps = 3;
 
   float timestep = 1.0f / 60.0f;
   float accumulator = 0;

@@ -34,15 +34,15 @@ void Track::create_track(string name, b2World *phys_world)
   if (name == "default")
   {
     vector<Point> outer_points = {
-        Point(1, 1),
-        Point(1, height - 1),
-        Point(width - 1, height - 1),
-        Point(width - 1, height / 2 + 1),
+        Point(0.5f, 0.5f),
+        Point(0.5f, height - 0.5f),
+        Point(width - 0.5f, height - 0.5f),
+        Point(width - 0.5f, height / 2 + 1),
         Point(15, height / 2 + 1),
         Point(15, (height / 2) - 1),
-        Point(width - 1, (height / 2) - 1),
-        Point(width - 1, 1),
-        Point(1, 1)};
+        Point(width - 0.5f, (height / 2) - 1),
+        Point(width - 0.5f, 0.5f),
+        Point(0.5f, 0.5f)};
 
     vector<Point> inner_points = create_inner_points(outer_points);
 
