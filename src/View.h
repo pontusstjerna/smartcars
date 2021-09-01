@@ -14,7 +14,7 @@ public:
   ~View();
   void start();
   void init();
-  void update();
+  void update(int fps);
 
 private:
   World *world;

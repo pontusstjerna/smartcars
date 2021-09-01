@@ -1,8 +1,6 @@
 #include "world.h"
 #include "contact_listener.h"
 
-#include <iostream>
-
 World::World()
 {
   b2Vec2 gravity(0.0f, 0.0f);
@@ -16,15 +14,7 @@ World::World()
   contact_listener = new ContactListener(
       cars.size(),
       [=](int car_index)
-      {
-        laps[car_index]++;
-        std::cout << "Car " << car_index << " new lap!\n";
-        std::cout << "Current score: \n";
-        for (int i = 0; i < laps.size(); i++)
-        {
-          std::cout << "Car " << i << ": " << laps[i] << "/" << max_laps << endl;
-        }
-      });
+      { laps[car_index]++; });
   phys_world->SetContactListener(contact_listener);
 }
 
@@ -63,4 +53,9 @@ Track *World::get_track() const
 vector<Car *> World::get_cars() const
 {
   return cars;
+}
+
+int World::get_laps(int car_index) const
+{
+  return laps[car_index];
 }

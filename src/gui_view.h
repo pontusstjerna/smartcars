@@ -13,7 +13,7 @@ public:
   ~GuiView();
 
   void init();
-  void render();
+  void render(int fps);
 
 private:
   const World *world;

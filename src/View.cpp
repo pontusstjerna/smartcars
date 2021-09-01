@@ -54,7 +54,7 @@ void View::init()
   car_texture = load_texture(renderer, "car").texture;
 }
 
-void View::update()
+void View::update(int fps)
 {
   SDL_SetRenderDrawColor(renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
 
@@ -65,7 +65,7 @@ void View::update()
 
   draw_track();
 
-  gui_view->render();
+  gui_view->render(fps);
 
   // Render stuff on window
   SDL_RenderPresent(renderer);

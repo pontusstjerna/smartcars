@@ -63,6 +63,9 @@ void GameController::run_game()
   float d_time = 0;
   float current_time = 0;
   float prev_time = 0;
+  float fps = 0;
+  float fps_counter = 0;
+  int frames_counter = 0;
 
   // Game loop
   while (running)
@@ -74,12 +77,22 @@ void GameController::run_game()
     }
 
     world->update(d_time);
-    view->update();
+    view->update(fps);
 
     SDL_Delay(10);
 
     current_time = SDL_GetTicks() / 1000.0f;
     d_time = current_time - prev_time;
     prev_time = current_time;
+
+    fps_counter += d_time;
+    frames_counter++;
+
+    if (fps_counter > 1)
+    {
+      fps_counter = 0;
+      fps = frames_counter;
+      frames_counter = 0;
+    }
   }
 }

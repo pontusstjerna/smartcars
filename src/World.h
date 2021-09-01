@@ -21,6 +21,7 @@ public:
   void update(float d_time);
   Track *get_track() const;
   vector<Car *> get_cars() const;
+  int get_laps(int car_index) const;
 
 private:
   b2World *phys_world;
