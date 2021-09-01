@@ -10,11 +10,18 @@ World::World()
   cars = {new Car(2.2, 2.2, 0, phys_world, 0), new Car(5, 2.2, 0, phys_world, 1)};
 
   laps = vector<int>(cars.size(), 0);
+  car_times = vector<float>(cars.size(), 0);
 
   contact_listener = new ContactListener(
       cars.size(),
       [=](int car_index)
-      { laps[car_index]++; });
+      {
+        laps[car_index]++;
+        if (winner_car_index == -1)
+        {
+          winner_car_index = car_index;
+        }
+      });
   phys_world->SetContactListener(contact_listener);
 }
 
@@ -39,9 +46,14 @@ void World::update(float d_time)
     accumulator -= timestep;
   }
 
-  for (Car *car : cars)
+  for (int i = 0; i < cars.size(); i++)
   {
-    car->update(d_time);
+    cars[i]->update(d_time);
+
+    if (laps[i] < max_laps)
+    {
+      car_times[i] += d_time;
+    }
   }
 }
 
@@ -58,4 +70,26 @@ vector<Car *> World::get_cars() const
 int World::get_laps(int car_index) const
 {
   return laps[car_index];
+}
+
+bool World::all_finished() const
+{
+  bool all_finished = true;
+  for (int l : laps)
+  {
+    all_finished = l == max_laps;
+    if (!all_finished)
+      return false;
+  }
+  return true;
+}
+
+float World::get_time(int car_index) const
+{
+  return car_times[car_index];
+}
+
+int World::get_winner_car_index() const
+{
+  return winner_car_index;
 }

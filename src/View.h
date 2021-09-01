@@ -16,6 +16,11 @@ public:
   void init();
   void update(int fps);
 
+  const static int WIDTH = (int)(800 * 1.5f);
+  const static int HEIGHT = (int)(600 * 1.5f);
+  const static int GAME_WIDTH = (int)(700 * 1.5f);
+  const static int GUI_WIDTH = WIDTH - GAME_WIDTH;
+
 private:
   World *world;
 
@@ -28,10 +33,6 @@ private:
   float scale;
   int extra_x;
   int extra_y;
-  const static int WIDTH = (int)(800 * 1.5f);
-  const static int HEIGHT = (int)(600 * 1.5f);
-  const static int GAME_WIDTH = (int)(700 * 1.5f);
-  const static int GUI_WIDTH = WIDTH - GAME_WIDTH;
 
   void draw_track();
   void draw_cars();
