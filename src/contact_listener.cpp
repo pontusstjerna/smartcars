@@ -86,7 +86,7 @@ bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_b
     return false;
   }
 
-  b2Vec2 goal_line_vector = b2Vec2(goal_line->end.add(-goal_line->start.x, -goal_line->start.y).to_b2Vec2());
+  b2Vec2 goal_line_vector = b2Vec2(goal_line->end.sub(goal_line->start).to_b2Vec2());
   goal_line_vector.Normalize();
 
   // Vector relative from goal line start point

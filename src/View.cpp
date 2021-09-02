@@ -1,6 +1,7 @@
 #include "view.h"
 #include "SDL_utils.h"
 
+#include <math.h>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -24,6 +25,8 @@ View::~View()
   delete gui_view;
 
   SDL_DestroyTexture(car_texture.texture);
+  SDL_DestroyTexture(goal_line_texture.texture);
+
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
 }
@@ -51,6 +54,7 @@ void View::init()
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
   car_texture = load_texture(renderer, "car");
+  goal_line_texture = load_texture(renderer, "goal_line");
 }
 
 void View::update(int fps)
@@ -86,18 +90,13 @@ void View::draw_track()
   SDL_SetRenderDrawColor(renderer, 255, 50, 50, SDL_ALPHA_OPAQUE);
 
   auto goal_line = world->get_track()->get_goal_line();
-  render_line(goal_line->start, goal_line->end);
+  render_line(goal_line->start, goal_line->end, goal_line_texture);
 }
 
 void View::draw_cars()
 {
   for (auto car : world->get_cars())
   {
-    SDL_Rect source_rect = {0,
-                            0,
-                            car_texture.width,
-                            car_texture.height};
-
     SDL_Rect destination_rect = {GUI_WIDTH + (int)((car->get_x() - car->width / 2) * scale) + extra_x,
                                  HEIGHT - (int)((car->get_y() + car->length / 2) * scale) - extra_y,
                                  (int)(car->width * scale),
@@ -106,7 +105,7 @@ void View::draw_cars()
     SDL_RenderCopyEx(
         renderer,
         car_texture.texture,
-        &source_rect,
+        NULL,
         &destination_rect,
         (double)(car->get_rot()),
         NULL,
@@ -116,6 +115,40 @@ void View::draw_cars()
 
 void View::render_line(Point start, Point end)
 {
+  SDL_RenderDrawLine(
+      renderer,
+      GUI_WIDTH + (int)(start.x * scale) + extra_x,
+      HEIGHT - (int)(start.y * scale) - extra_y,
+      GUI_WIDTH + (int)(end.x * scale) + extra_x,
+      HEIGHT - (int)(end.y * scale) - extra_y);
+}
+
+void View::render_line(Point start, Point end, TextureWrapper texture)
+{
+  float pixel_line_length = start.get_distance(end) * scale;
+  float line_heading = start.get_heading(end);
+
+  int repeats = ceil(pixel_line_length / texture.height);
+
+  for (int height = 0; height < pixel_line_length; height += texture.height)
+  {
+    int next_height = min(texture.height, (int)(pixel_line_length - height));
+    SDL_Rect destination_rect = {
+        GUI_WIDTH + (int)(start.x * scale) + extra_x,
+        HEIGHT - ((int)(start.y * scale) + height + next_height) - extra_y,
+        texture.width,
+        next_height};
+
+    SDL_RenderCopyEx(
+        renderer,
+        texture.texture,
+        NULL,
+        &destination_rect,
+        (double)line_heading,
+        NULL,
+        SDL_FLIP_NONE);
+  }
+
   SDL_RenderDrawLine(
       renderer,
       GUI_WIDTH + (int)(start.x * scale) + extra_x,

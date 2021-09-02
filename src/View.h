@@ -31,6 +31,7 @@ private:
   SDL_Renderer *renderer = NULL;
 
   SDL_utils::TextureWrapper car_texture;
+  SDL_utils::TextureWrapper goal_line_texture;
 
   float scale;
   int extra_x;
@@ -39,6 +40,7 @@ private:
   void draw_track();
   void draw_cars();
   void render_line(Point start, Point end);
+  void render_line(Point start, Point end, SDL_utils::TextureWrapper texture);
 };
 
 #endif /* VIEW */
