@@ -1,7 +1,9 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include "view.h"
 #include "SDL_utils.h"
 
-#include <math.h>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -128,31 +130,32 @@ void View::render_line(Point start, Point end, TextureWrapper texture)
   float pixel_line_length = start.get_distance(end) * scale;
   float line_heading = start.get_heading(end);
 
-  int repeats = ceil(pixel_line_length / texture.height);
-
-  for (int height = 0; height < pixel_line_length; height += texture.height)
+  for (int total_height = 0; total_height < pixel_line_length; total_height += texture.height)
   {
-    int next_height = min(texture.height, (int)(pixel_line_length - height));
+    // Calculate x + y UNROTATED with heading = 0
+    int next_height = min(texture.height, (int)(pixel_line_length - total_height));
+    int start_x = (int)(start.x * scale);
+    int start_y = (int)(start.y * scale);
+    int y = total_height + next_height;
+
+    SDL_Rect source_rect = {0, texture.height - next_height, texture.width, next_height};
+
+    // Apply rotations to x and y
     SDL_Rect destination_rect = {
-        GUI_WIDTH + (int)(start.x * scale) + extra_x,
-        HEIGHT - ((int)(start.y * scale) + height + next_height) - extra_y,
+        GUI_WIDTH + start_x + y * sin(line_heading) + extra_x,
+        HEIGHT - (start_y + y * cos(line_heading)) - extra_y,
         texture.width,
         next_height};
+
+    SDL_Point rotation_point = {0, 0};
 
     SDL_RenderCopyEx(
         renderer,
         texture.texture,
-        NULL,
+        &source_rect,
         &destination_rect,
-        (double)line_heading,
-        NULL,
+        (double)(line_heading * 180 / M_PI),
+        &rotation_point,
         SDL_FLIP_NONE);
   }
-
-  SDL_RenderDrawLine(
-      renderer,
-      GUI_WIDTH + (int)(start.x * scale) + extra_x,
-      HEIGHT - (int)(start.y * scale) - extra_y,
-      GUI_WIDTH + (int)(end.x * scale) + extra_x,
-      HEIGHT - (int)(end.y * scale) - extra_y);
 }
