@@ -106,8 +106,8 @@ bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_b
   cout << "Dot product of car x goal line is: " << dot << endl;
   cout << "Goal line car pos vector: (" << goal_line_car_pos.x << ", " << goal_line_car_pos.y << ")\n";*/
 
-  // Beginning of contact? Car must be to the right of goal line. End of contact? Must be to the left.
-  return is_begin ? dot > 0 : dot < 0;
+  // Beginning of contact? Car must be to the left of goal line. End of contact? Must be to the right.
+  return is_begin ? dot < 0 : dot > 0;
 }
 
 PhysObject *ContactListener::cast_to_phys_obj(b2Body *body)

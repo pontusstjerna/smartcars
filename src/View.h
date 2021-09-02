@@ -32,6 +32,7 @@ private:
 
   SDL_utils::TextureWrapper car_texture;
   SDL_utils::TextureWrapper goal_line_texture;
+  SDL_utils::TextureWrapper track_segment_texture;
 
   float scale;
   int extra_x;

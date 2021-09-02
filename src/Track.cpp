@@ -46,7 +46,7 @@ void Track::create_track(string name, b2World *phys_world)
 
     vector<Point> inner_points = create_inner_points(outer_points);
 
-    goal_line = new GoalLine(outer_points[0].add(track_width, 0), inner_points[0], phys_world);
+    goal_line = new GoalLine(inner_points[0], outer_points[0].add(track_width, 0), phys_world);
 
     segments = vector<TrackSegment *>{
         new TrackSegment(outer_points, phys_world),

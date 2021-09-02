@@ -28,6 +28,7 @@ View::~View()
 
   SDL_DestroyTexture(car_texture.texture);
   SDL_DestroyTexture(goal_line_texture.texture);
+  SDL_DestroyTexture(track_segment_texture.texture);
 
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
@@ -57,6 +58,7 @@ void View::init()
 
   car_texture = load_texture(renderer, "car");
   goal_line_texture = load_texture(renderer, "goal_line");
+  track_segment_texture = load_texture(renderer, "track_segment");
 }
 
 void View::update(int fps)
@@ -66,9 +68,9 @@ void View::update(int fps)
   // Clear screen with above color
   SDL_RenderClear(renderer);
 
-  draw_cars();
-
   draw_track();
+
+  draw_cars();
 
   gui_view->render(fps);
 
@@ -78,18 +80,16 @@ void View::update(int fps)
 
 void View::draw_track()
 {
-  SDL_SetRenderDrawColor(renderer, 50, 255, 50, SDL_ALPHA_OPAQUE);
+  SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
 
   for (TrackSegment *segment : world->get_track()->get_segments())
   {
     auto points = segment->get_points();
     for (int i = 0; i < points.size() - 1; i++)
     {
-      render_line(points[i], points[i + 1]);
+      render_line(points[i], points[i + 1], track_segment_texture);
     }
   }
-
-  SDL_SetRenderDrawColor(renderer, 255, 50, 50, SDL_ALPHA_OPAQUE);
 
   auto goal_line = world->get_track()->get_goal_line();
   render_line(goal_line->start, goal_line->end, goal_line_texture);
@@ -127,23 +127,23 @@ void View::render_line(Point start, Point end)
 
 void View::render_line(Point start, Point end, TextureWrapper texture)
 {
-  float pixel_line_length = start.get_distance(end) * scale;
-  float line_heading = start.get_heading(end);
+  float pixel_line_length = end.get_distance(start) * scale;
+  float line_heading = end.get_heading(start);
 
   for (int total_height = 0; total_height < pixel_line_length; total_height += texture.height)
   {
     // Calculate x + y UNROTATED with heading = 0
     int next_height = min(texture.height, (int)(pixel_line_length - total_height));
-    int start_x = (int)(start.x * scale);
-    int start_y = (int)(start.y * scale);
-    int y = total_height + next_height;
+    float start_x = end.x * scale;
+    float start_y = end.y * scale;
+    float y = total_height + next_height;
 
-    SDL_Rect source_rect = {0, texture.height - next_height, texture.width, next_height};
+    SDL_Rect source_rect = {0, (texture.height - next_height), texture.width, next_height};
 
     // Apply rotations to x and y
     SDL_Rect destination_rect = {
-        GUI_WIDTH + start_x + y * sin(line_heading) + extra_x,
-        HEIGHT - (start_y + y * cos(line_heading)) - extra_y,
+        (int)(GUI_WIDTH + start_x + y * sin(line_heading) + extra_x),
+        (int)(HEIGHT - (start_y + y * cos(line_heading)) - extra_y),
         texture.width,
         next_height};
 
