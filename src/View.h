@@ -4,6 +4,7 @@
 #include "world.h"
 #include "point.h"
 #include "gui_view.h"
+#include "SDL_utils.h"
 
 #include <SDL2/SDL.h>
 
@@ -28,7 +29,8 @@ private:
 
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;
-  SDL_Texture *car_texture = NULL;
+
+  SDL_utils::TextureWrapper car_texture;
 
   float scale;
   int extra_x;

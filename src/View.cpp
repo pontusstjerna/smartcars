@@ -1,6 +1,5 @@
 #include "view.h"
 #include "SDL_utils.h"
-#include "texture_sizes.h"
 
 #include <iostream>
 #include <string>
@@ -24,7 +23,7 @@ View::~View()
 {
   delete gui_view;
 
-  SDL_DestroyTexture(car_texture);
+  SDL_DestroyTexture(car_texture.texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
 }
@@ -51,7 +50,7 @@ void View::init()
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-  car_texture = load_texture(renderer, "car").texture;
+  car_texture = load_texture(renderer, "car");
 }
 
 void View::update(int fps)
@@ -96,8 +95,8 @@ void View::draw_cars()
   {
     SDL_Rect source_rect = {0,
                             0,
-                            TextureSizes::CAR_WIDTH,
-                            TextureSizes::CAR_HEIGHT};
+                            car_texture.width,
+                            car_texture.height};
 
     SDL_Rect destination_rect = {GUI_WIDTH + (int)((car->get_x() - car->width / 2) * scale) + extra_x,
                                  HEIGHT - (int)((car->get_y() + car->length / 2) * scale) - extra_y,
@@ -106,7 +105,7 @@ void View::draw_cars()
 
     SDL_RenderCopyEx(
         renderer,
-        car_texture,
+        car_texture.texture,
         &source_rect,
         &destination_rect,
         (double)(car->get_rot()),

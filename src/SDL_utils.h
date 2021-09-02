@@ -9,9 +9,11 @@ namespace SDL_utils
 {
   struct TextureWrapper
   {
-    SDL_Texture *texture;
+    SDL_Texture *texture = NULL;
     int width = 0;
     int height = 0;
+
+    TextureWrapper() {}
 
     TextureWrapper(
         SDL_Texture *texture, int width, int height)
