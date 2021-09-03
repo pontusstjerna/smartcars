@@ -17,13 +17,14 @@ public:
   Track(b2World *phys_world);
   ~Track();
 
-  const float width, height;
-
   vector<TrackSegment *> get_segments();
   GoalLine *get_goal_line();
+  float get_width();
+  float get_height();
 
 private:
   const float track_width = 6;
+  float width, height;
   vector<TrackSegment *> segments;
   GoalLine *goal_line;
 

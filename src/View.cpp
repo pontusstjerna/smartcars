@@ -14,8 +14,8 @@ using namespace SDL_utils;
 
 View::View(World *world) : world(world)
 {
-  float world_width = world->get_track()->width;
-  float world_height = world->get_track()->height;
+  float world_width = world->get_track()->get_width();
+  float world_height = world->get_track()->get_height();
   scale = min((float)GAME_WIDTH / world_width, (float)HEIGHT / world_height);
 
   // To enabling centering in the smaller (padded) axis
