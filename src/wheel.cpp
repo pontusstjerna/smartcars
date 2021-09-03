@@ -3,8 +3,17 @@
 
 #include "wheel.h"
 
-Wheel::Wheel(float x, float y, float rot, b2World *phys_world) : DynamicBody(x, y, WIDTH, LENGTH, rot, phys_world),
-                                                                 PhysObject(BodyData(BodyType::WHEEL))
+Wheel::Wheel(float x,
+             float y,
+             float rot,
+             b2World *phys_world)
+    : DynamicBody(x,
+                  y,
+                  WIDTH,
+                  LENGTH,
+                  rot,
+                  phys_world,
+                  BodyData(BodyType::WHEEL))
 {
   b2PolygonShape dynamic_box;
   dynamic_box.SetAsBox(WIDTH / 2.0f, LENGTH / 2.0f);

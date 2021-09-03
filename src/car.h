@@ -1,7 +1,6 @@
 #ifndef CAR_H
 #define CAR_H
 
-#include "phys_object.h"
 #include "dynamic_body.h"
 #include "body_data.h"
 #include "wheel.h"
@@ -10,7 +9,7 @@
 #include <box2d/box2d.h>
 #include <vector>
 
-class Car : public DynamicBody, public PhysObject
+class Car : public DynamicBody
 {
 public:
   enum WheelPos

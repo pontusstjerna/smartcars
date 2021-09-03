@@ -6,7 +6,7 @@
 
 #include <box2d/box2d.h>
 
-class Wheel : public DynamicBody, public PhysObject
+class Wheel : public DynamicBody
 {
 public:
   // 2.5 is the pixel to meter ratio

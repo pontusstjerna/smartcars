@@ -3,7 +3,13 @@
 
 #include "dynamic_body.h"
 
-DynamicBody::DynamicBody(float x, float y, float width, float length, float rot, b2World *phys_world) : width(width), length(length)
+DynamicBody::DynamicBody(float x,
+                         float y,
+                         float width,
+                         float length,
+                         float rot,
+                         b2World *phys_world,
+                         BodyData body_data) : width(width), length(length), PhysObject(body_data)
 {
   // TODO: Create body with x, y and rot
   b2BodyDef bodyDef;
