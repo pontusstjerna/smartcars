@@ -99,10 +99,10 @@ void View::draw_cars()
 {
   for (auto car : world->get_cars())
   {
-    SDL_Rect destination_rect = {GUI_WIDTH + (int)((car->get_x() - car->width / 2) * scale) + extra_x,
-                                 HEIGHT - (int)((car->get_y() + car->length / 2) * scale) - extra_y,
-                                 (int)(car->width * scale),
-                                 (int)(car->length * scale)};
+    SDL_Rect destination_rect = {GUI_WIDTH + (int)((car->get_x() - Car::WIDTH / 2) * scale) + extra_x,
+                                 HEIGHT - (int)((car->get_y() + Car::LENGTH / 2) * scale) - extra_y,
+                                 (int)(Car::WIDTH * scale),
+                                 (int)(Car::LENGTH * scale)};
 
     SDL_RenderCopyEx(
         renderer,

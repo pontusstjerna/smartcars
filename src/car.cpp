@@ -18,19 +18,11 @@ Car::Car(
     float y,
     float rot,
     b2World *phys_world,
-    int index) : PhysObject(BodyData(BodyType::CAR, index))
+    int index) : DynamicBody(x, y, rot, phys_world), PhysObject(BodyData(BodyType::CAR, index))
 {
-  // TODO: Create body with x, y and rot
-  b2BodyDef bodyDef;
-  bodyDef.type = b2_dynamicBody;
-  bodyDef.position.Set(x, y);
-  bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(this);
-
-  body = phys_world->CreateBody(&bodyDef);
-
   b2PolygonShape dynamic_box;
   // TODO: Add width + height
-  dynamic_box.SetAsBox(width / 2.0f, length / 2.0f);
+  dynamic_box.SetAsBox(WIDTH / 2.0f, LENGTH / 2.0f);
 
   b2FixtureDef fixture_def;
   fixture_def.shape = &dynamic_box;
@@ -38,11 +30,6 @@ Car::Car(
   fixture_def.friction = 0.1f;
 
   body->CreateFixture(&fixture_def);
-}
-
-Car::~Car()
-{
-  body = NULL;
 }
 
 void Car::update(float d_time)
@@ -74,21 +61,6 @@ void Car::update(float d_time)
   {
     body->SetAngularVelocity(0);
   }
-}
-
-float Car::get_x()
-{
-  return body->GetPosition().x;
-}
-
-float Car::get_y()
-{
-  return body->GetPosition().y;
-}
-
-float Car::get_rot()
-{
-  return body->GetAngle() * (180 / M_PI);
 }
 
 void Car::accelerate()

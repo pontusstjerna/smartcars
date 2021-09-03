@@ -5,7 +5,8 @@ enum BodyType
 {
   CAR,
   GOAL_LINE,
-  TRACK_SEGMENT
+  TRACK_SEGMENT,
+  WHEEL
 };
 
 struct BodyData

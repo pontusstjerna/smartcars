@@ -2,25 +2,21 @@
 #define CAR_H
 
 #include "phys_object.h"
+#include "dynamic_body.h"
 #include "body_data.h"
 
 #include <box2d/box2d.h>
 
-class Car : PhysObject
+class Car : public DynamicBody, public PhysObject
 {
 public:
   Car(float x, float y, float rot, b2World *phys_world, int index);
-  ~Car();
 
   // 1.95 meter wide, 2 meters long
-  const float width = 1.95;
-  const float length = 2;
+  static constexpr float WIDTH = 1.95;
+  static constexpr float LENGTH = 2;
 
   void update(float d_time);
-
-  float get_x();
-  float get_y();
-  float get_rot();
 
   void accelerate();
   void reverse();
@@ -43,8 +39,6 @@ private:
   float velocity = 0.0f;
   float acceleration = 0.0f;
   float angular_velocity = 0.0f;
-
-  b2Body *body;
 };
 
 #endif /* CAR */
