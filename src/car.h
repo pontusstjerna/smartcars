@@ -51,9 +51,7 @@ private:
   // vel = m/s
   // ang_vel = rad/s
   const float max_acceleration = 20.0f;
-  const float engine_brake_acceleration = 10.0f;
-  const float max_speed = 8.3f;
-  const float min_reverse_speed = -3.0f;
+  const float min_reverse_acceleration = -3.0f;
   const float max_angular_velocity = 1.50f;
   const float min_turn_velocity = 1.0f;
 
@@ -63,6 +61,8 @@ private:
 
   std::vector<Wheel *> wheels = std::vector<Wheel *>(4, NULL);
   std::vector<b2RevoluteJoint *> front_wheel_joints;
+
+  void kill_orthogonal_velocity(b2Body *target);
 };
 
 #endif /* CAR */

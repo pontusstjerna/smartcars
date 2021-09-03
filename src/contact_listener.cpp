@@ -100,7 +100,7 @@ bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_b
   /* Dot product > 0 is if vector is "in front of us", i.e. car vel is in front of goal line.
      By rotating the car's velocity 90 deg CCW we can calculate wether the vector is on the "right" or "left" side of goal line
   */
-  float dot = goal_line_vector.x * goal_line_car_pos_rotated.x + goal_line_vector.y * goal_line_car_pos_rotated.y;
+  float dot = b2Dot(goal_line_vector, goal_line_car_pos_rotated);
 
   /*cout << (is_begin ? "Begin contact: " : "End contact: ");
   cout << "Dot product of car x goal line is: " << dot << endl;

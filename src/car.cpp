@@ -21,9 +21,11 @@ Car::Car(
   b2FixtureDef fixture_def;
   fixture_def.shape = &dynamic_box;
   fixture_def.density = 1.0f;
-  fixture_def.friction = 0.1f;
+  fixture_def.friction = 10.0f;
 
   body->CreateFixture(&fixture_def);
+  body->SetAngularDamping(100);
+  body->SetLinearDamping(1);
 
   for (int i = 0; i < wheel_offsets.size(); i++)
   {
@@ -34,11 +36,17 @@ Car::Car(
     {
       b2RevoluteJointDef joint_def;
       b2Body *front_wheel_body = wheel->get_body();
-      joint_def.Initialize(body, front_wheel_body, front_wheel_body->GetWorldCenter());
+      joint_def.bodyA = body;
+      joint_def.bodyB = front_wheel_body;
+      joint_def.lowerAngle = 0;
+      joint_def.upperAngle = 0;
+      joint_def.localAnchorA.Set(wheel_offsets[i].x, wheel_offsets[i].y);
+      joint_def.localAnchorB.SetZero();
+      //joint_def.Initialize(body, front_wheel_body, front_wheel_body->GetWorldCenter());
 
       // Turning motor
       joint_def.enableMotor = true;
-      joint_def.maxMotorTorque = 100;
+      joint_def.maxMotorTorque = 50;
 
       b2RevoluteJoint *joint = (b2RevoluteJoint *)phys_world->CreateJoint(&joint_def);
       front_wheel_joints.push_back(joint);
@@ -67,24 +75,21 @@ Car::~Car()
 
 void Car::update(float d_time)
 {
-  float new_velocity = velocity + acceleration * d_time;
 
-  // Deaccelerate to 0
-  if (acceleration == engine_brake_acceleration)
+  for (int i = 0; i < wheels.size(); i++)
   {
-    velocity = min(0.0f, new_velocity);
-  }
-  else if (acceleration == -engine_brake_acceleration)
-  {
-    velocity = max(0.0f, new_velocity);
-  }
-  else
-  {
-    velocity = max(min_reverse_speed, min(max_speed, new_velocity));
-  }
+    Wheel *wheel = wheels[i];
+    kill_orthogonal_velocity(wheel->get_body());
 
-  float angle = body->GetAngle();
-  body->SetLinearVelocity(b2Vec2(velocity * sin(angle), velocity * cos(angle)));
+    if (i == WheelPos::FRONT_LEFT || i == WheelPos::FRONT_RIGHT)
+    {
+      b2Body *wheel_body = wheel->get_body();
+      float angle = wheel_body->GetAngle();
+
+      b2Vec2 force = b2Vec2(acceleration * sin(angle), acceleration * cos(angle));
+      wheel_body->ApplyForce(force, wheel_body->GetPosition(), true);
+    }
+  }
 
   for (auto joint : front_wheel_joints)
   {
@@ -99,12 +104,12 @@ void Car::accelerate()
 
 void Car::stop()
 {
-  acceleration = velocity > 0 ? -engine_brake_acceleration : engine_brake_acceleration;
+  acceleration = 0;
 }
 
 void Car::reverse()
 {
-  acceleration = -max_acceleration;
+  acceleration = min_reverse_acceleration;
 }
 
 void Car::turn_left()
@@ -125,4 +130,19 @@ void Car::stop_turn()
 vector<Wheel *> Car::get_wheels()
 {
   return wheels;
+}
+
+// vinkelrät för fan
+void Car::kill_orthogonal_velocity(b2Body *target)
+{
+  b2Vec2 velocity = target->GetLinearVelocityFromLocalPoint(b2Vec2(0, 0));
+
+  float angle = target->GetAngle();
+  b2Vec2 orthogonal_axis = b2Vec2(sin(angle), cos(angle));
+
+  // The dot product tells us how much of velocity is projected on orthogonal axis
+  float orthogonal_velocity_mag = b2Dot(velocity, orthogonal_axis);
+  b2Vec2 orthogonal_velocity = b2Vec2(orthogonal_axis.x * orthogonal_velocity_mag, orthogonal_axis.y * orthogonal_velocity_mag);
+
+  target->SetLinearVelocity(orthogonal_velocity);
 }
