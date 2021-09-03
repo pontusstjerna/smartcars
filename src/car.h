@@ -62,6 +62,7 @@ private:
   float angular_velocity = 0.0f;
 
   std::vector<Wheel *> wheels = std::vector<Wheel *>(4, NULL);
+  std::vector<b2RevoluteJoint *> front_wheel_joints;
 };
 
 #endif /* CAR */

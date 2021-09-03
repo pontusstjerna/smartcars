@@ -27,7 +27,33 @@ Car::Car(
 
   for (int i = 0; i < wheel_offsets.size(); i++)
   {
-    wheels[i] = new Wheel(x + wheel_offsets[i].x, y + wheel_offsets[i].y, rot, phys_world);
+    Wheel *wheel = new Wheel(x + wheel_offsets[i].x, y + wheel_offsets[i].y, rot, phys_world);
+    wheels[i] = wheel;
+
+    if (i == WheelPos::FRONT_LEFT || i == WheelPos::FRONT_RIGHT)
+    {
+      b2RevoluteJointDef joint_def;
+      b2Body *front_wheel_body = wheel->get_body();
+      joint_def.Initialize(body, front_wheel_body, front_wheel_body->GetWorldCenter());
+
+      // Turning motor
+      joint_def.enableMotor = true;
+      joint_def.maxMotorTorque = 100;
+
+      b2RevoluteJoint *joint = (b2RevoluteJoint *)phys_world->CreateJoint(&joint_def);
+      front_wheel_joints.push_back(joint);
+    }
+    else
+    {
+      b2PrismaticJointDef joint_def;
+      b2Body *rear_wheel_body = wheel->get_body();
+      joint_def.Initialize(body, rear_wheel_body, rear_wheel_body->GetWorldCenter(), b2Vec2(1, 0));
+      joint_def.enableLimit = true;
+      joint_def.lowerTranslation = 0;
+      joint_def.upperTranslation = 0;
+
+      phys_world->CreateJoint(&joint_def);
+    }
   }
 }
 
@@ -60,13 +86,9 @@ void Car::update(float d_time)
   float angle = body->GetAngle();
   body->SetLinearVelocity(b2Vec2(velocity * sin(angle), velocity * cos(angle)));
 
-  if (abs(velocity) > min_turn_velocity)
+  for (auto joint : front_wheel_joints)
   {
-    body->SetAngularVelocity(velocity > 0 ? angular_velocity : -angular_velocity);
-  }
-  else if (abs(body->GetAngularVelocity()) > min_turn_velocity)
-  {
-    body->SetAngularVelocity(0);
+    joint->SetMotorSpeed(angular_velocity);
   }
 }
 

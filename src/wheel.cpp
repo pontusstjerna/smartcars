@@ -25,3 +25,8 @@ Wheel::Wheel(float x,
 
   body->CreateFixture(&fixture_def);
 }
+
+b2Body *Wheel::get_body()
+{
+  return body;
+}

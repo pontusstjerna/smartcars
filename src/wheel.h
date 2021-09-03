@@ -15,9 +15,7 @@ public:
 
   Wheel(float x, float y, float rot, b2World *phys_world);
 
-  float get_x();
-  float get_y();
-  float get_rot();
+  b2Body *get_body();
 };
 
 #endif /* WHEEL */
