@@ -5,11 +5,6 @@
 
 #include "car.h"
 #include "body_data.h"
-/*
-TODO: Real car physics. 
-https://www.emanueleferonato.com/2009/04/06/two-ways-to-make-box2d-cars/
-
-*/
 
 using namespace std;
 
@@ -18,10 +13,9 @@ Car::Car(
     float y,
     float rot,
     b2World *phys_world,
-    int index) : DynamicBody(x, y, rot, phys_world), PhysObject(BodyData(BodyType::CAR, index))
+    int index) : DynamicBody(x, y, WIDTH, LENGTH, rot, phys_world), PhysObject(BodyData(BodyType::CAR, index))
 {
   b2PolygonShape dynamic_box;
-  // TODO: Add width + height
   dynamic_box.SetAsBox(WIDTH / 2.0f, LENGTH / 2.0f);
 
   b2FixtureDef fixture_def;
@@ -30,6 +24,19 @@ Car::Car(
   fixture_def.friction = 0.1f;
 
   body->CreateFixture(&fixture_def);
+
+  for (int i = 0; i < wheel_offsets.size(); i++)
+  {
+    wheels[i] = new Wheel(x + wheel_offsets[i].x, y + wheel_offsets[i].y, rot, phys_world);
+  }
+}
+
+Car::~Car()
+{
+  for (Wheel *wheel : wheels)
+  {
+    delete wheel;
+  }
 }
 
 void Car::update(float d_time)
@@ -91,4 +98,9 @@ void Car::turn_right()
 void Car::stop_turn()
 {
   angular_velocity = 0.0f;
+}
+
+vector<Wheel *> Car::get_wheels()
+{
+  return wheels;
 }

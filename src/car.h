@@ -4,17 +4,37 @@
 #include "phys_object.h"
 #include "dynamic_body.h"
 #include "body_data.h"
+#include "wheel.h"
+#include "point.h"
 
 #include <box2d/box2d.h>
+#include <vector>
 
 class Car : public DynamicBody, public PhysObject
 {
 public:
-  Car(float x, float y, float rot, b2World *phys_world, int index);
+  enum WheelPos
+  {
+    FRONT_LEFT,
+    FRONT_RIGHT,
+    REAR_RIGHT,
+    REAR_LEFT
+  };
 
-  // 1.95 meter wide, 2 meters long
-  static constexpr float WIDTH = 1.95;
+  Car(float x, float y, float rot, b2World *phys_world, int index);
+  ~Car();
+
+  // 1.2 meter wide, 2 meters long
+  static constexpr float WIDTH = 1.2;
   static constexpr float LENGTH = 2;
+
+  // Offsets are in pixels times pixel => meter ratio
+  // The points are from car center to wheel center
+  const std::vector<Point> wheel_offsets =
+      {Point(-0.33f * 2.5f, 0.26f * 2.5f),
+       Point(0.33f * 2.5f, 0.26f * 2.5f),
+       Point(0.33f * 2.5f, -0.2f * 2.5f),
+       Point(-0.33f * 2.5f, -0.2f * 2.5f)};
 
   void update(float d_time);
 
@@ -24,6 +44,8 @@ public:
   void turn_left();
   void turn_right();
   void stop_turn();
+
+  std::vector<Wheel *> get_wheels();
 
 private:
   // acc = m/s^2
@@ -39,6 +61,8 @@ private:
   float velocity = 0.0f;
   float acceleration = 0.0f;
   float angular_velocity = 0.0f;
+
+  std::vector<Wheel *> wheels = std::vector<Wheel *>(4, NULL);
 };
 
 #endif /* CAR */

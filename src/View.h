@@ -5,6 +5,7 @@
 #include "point.h"
 #include "gui_view.h"
 #include "SDL_utils.h"
+#include "dynamic_body.h"
 
 #include <SDL2/SDL.h>
 
@@ -31,6 +32,7 @@ private:
   SDL_Renderer *renderer = NULL;
 
   SDL_utils::TextureWrapper car_texture;
+  SDL_utils::TextureWrapper wheel_texture;
   SDL_utils::TextureWrapper goal_line_texture;
   SDL_utils::TextureWrapper track_segment_texture;
 
@@ -42,6 +44,7 @@ private:
   void draw_cars();
   void render_line(Point start, Point end);
   void render_line(Point start, Point end, SDL_utils::TextureWrapper texture);
+  void render_dynamic_body(DynamicBody *body, SDL_Texture *texture, bool flip);
 };
 
 #endif /* VIEW */

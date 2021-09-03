@@ -3,6 +3,7 @@
 
 #include "view.h"
 #include "SDL_utils.h"
+#include "car.h"
 
 #include <iostream>
 #include <string>
@@ -27,6 +28,7 @@ View::~View()
   delete gui_view;
 
   SDL_DestroyTexture(car_texture.texture);
+  SDL_DestroyTexture(wheel_texture.texture);
   SDL_DestroyTexture(goal_line_texture.texture);
   SDL_DestroyTexture(track_segment_texture.texture);
 
@@ -57,6 +59,7 @@ void View::init()
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
   car_texture = load_texture(renderer, "car");
+  wheel_texture = load_texture(renderer, "wheel");
   goal_line_texture = load_texture(renderer, "goal_line");
   track_segment_texture = load_texture(renderer, "track_segment");
 }
@@ -99,19 +102,15 @@ void View::draw_cars()
 {
   for (auto car : world->get_cars())
   {
-    SDL_Rect destination_rect = {GUI_WIDTH + (int)((car->get_x() - Car::WIDTH / 2) * scale) + extra_x,
-                                 HEIGHT - (int)((car->get_y() + Car::LENGTH / 2) * scale) - extra_y,
-                                 (int)(Car::WIDTH * scale),
-                                 (int)(Car::LENGTH * scale)};
+    render_dynamic_body(car, car_texture.texture, false);
 
-    SDL_RenderCopyEx(
-        renderer,
-        car_texture.texture,
-        NULL,
-        &destination_rect,
-        (double)(car->get_rot()),
-        NULL,
-        SDL_FLIP_NONE);
+    auto wheels = car->get_wheels();
+    for (int i = 0; i < wheels.size(); i++)
+    {
+      auto wheel = wheels[i];
+      bool flip = i == Car::WheelPos::FRONT_RIGHT || i == Car::WheelPos::REAR_RIGHT;
+      render_dynamic_body(wheel, wheel_texture.texture, flip);
+    }
   }
 }
 
@@ -158,4 +157,21 @@ void View::render_line(Point start, Point end, TextureWrapper texture)
         &rotation_point,
         SDL_FLIP_NONE);
   }
+}
+
+void View::render_dynamic_body(DynamicBody *body, SDL_Texture *texture, bool flip)
+{
+  SDL_Rect destination_rect = {GUI_WIDTH + (int)((body->get_x() - body->width / 2) * scale) + extra_x,
+                               HEIGHT - (int)((body->get_y() + body->length / 2) * scale) - extra_y,
+                               (int)(body->width * scale),
+                               (int)(body->length * scale)};
+
+  SDL_RenderCopyEx(
+      renderer,
+      texture,
+      NULL,
+      &destination_rect,
+      (double)(body->get_rot()),
+      NULL,
+      flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }

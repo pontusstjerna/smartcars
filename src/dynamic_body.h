@@ -6,8 +6,10 @@
 class DynamicBody
 {
 public:
-  DynamicBody(float x, float y, float rot, b2World *phys_world);
+  DynamicBody(float x, float y, float width, float length, float rot, b2World *phys_world);
   ~DynamicBody();
+
+  const float width, length;
 
   float get_x();
   float get_y();
