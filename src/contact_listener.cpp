@@ -20,6 +20,12 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *old_manifol
   b2Body *body_a = contact->GetFixtureA()->GetBody();
   b2Body *body_b = contact->GetFixtureB()->GetBody();
 
+  if (is_wheel_and_goal_line(body_a, body_b))
+  {
+    contact->SetEnabled(false);
+    return;
+  }
+
   if (is_potential_lap(body_a, body_b, true))
   {
     contact->SetEnabled(false);
@@ -134,4 +140,13 @@ int ContactListener::try_get_car_index(b2Body *body_a, b2Body *body_b)
   }
 
   return -1;
+}
+
+bool ContactListener::is_wheel_and_goal_line(b2Body *body_a, b2Body *body_b)
+{
+  BodyData a = cast_to_phys_obj(body_a)->body_data;
+  BodyData b = cast_to_phys_obj(body_b)->body_data;
+
+  return (a.body_type == BodyType::WHEEL && b.body_type == BodyType::GOAL_LINE) ||
+         (b.body_type == BodyType::WHEEL && a.body_type == BodyType::GOAL_LINE);
 }

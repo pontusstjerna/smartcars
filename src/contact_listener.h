@@ -23,6 +23,7 @@ private:
   bool is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_begin);
   PhysObject *cast_to_phys_obj(b2Body *body);
   int try_get_car_index(b2Body *body_a, b2Body *body_b);
+  bool is_wheel_and_goal_line(b2Body *body_a, b2Body *body_b);
 };
 
 #endif /* CONTACT_LISTENER */

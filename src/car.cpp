@@ -109,12 +109,12 @@ void Car::reverse()
 
 void Car::turn_left()
 {
-  target_steering_angle = -max_steering_angle;
+  target_steering_angle = max_steering_angle;
 }
 
 void Car::turn_right()
 {
-  target_steering_angle = max_steering_angle;
+  target_steering_angle = -max_steering_angle;
 }
 
 void Car::stop_turn()

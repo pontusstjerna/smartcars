@@ -74,11 +74,11 @@ void View::update(int fps, function<void()> draw_debug)
   // Clear screen with above color
   SDL_RenderClear(renderer);
 
-  /*draw_track();
+  draw_track();
 
   draw_cars();
 
-  gui_view->render(fps);*/
+  gui_view->render(fps);
 
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
   draw_debug();
@@ -182,7 +182,7 @@ void View::render_dynamic_body(DynamicBody *body, SDL_Texture *texture, bool fli
       texture,
       NULL,
       &destination_rect,
-      (double)(body->get_rot()),
+      (double)(M_PI - body->get_rot()),
       NULL,
       flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
