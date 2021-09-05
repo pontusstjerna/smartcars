@@ -36,17 +36,11 @@ Car::Car(
     {
       b2RevoluteJointDef joint_def;
       b2Body *front_wheel_body = wheel->get_body();
-      /*joint_def.bodyA = body;
-      joint_def.bodyB = front_wheel_body;
-      joint_def.lowerAngle = 0;
-      joint_def.upperAngle = 0;
-      joint_def.localAnchorA.Set(wheel_offsets[i].x, wheel_offsets[i].y);
-      joint_def.localAnchorB.SetZero();*/
       joint_def.Initialize(body, front_wheel_body, front_wheel_body->GetWorldCenter());
 
       // Turning motor
       joint_def.enableMotor = true;
-      joint_def.maxMotorTorque = 50;
+      joint_def.maxMotorTorque = 100;
 
       b2RevoluteJoint *joint = (b2RevoluteJoint *)phys_world->CreateJoint(&joint_def);
       front_wheel_joints.push_back(joint);
@@ -93,7 +87,8 @@ void Car::update(float d_time)
 
   for (auto joint : front_wheel_joints)
   {
-    joint->SetMotorSpeed(angular_velocity);
+    float d_angle = target_steering_angle - joint->GetJointAngle();
+    joint->SetMotorSpeed(d_angle * steer_speed);
   }
 }
 
@@ -114,17 +109,17 @@ void Car::reverse()
 
 void Car::turn_left()
 {
-  angular_velocity = -max_angular_velocity;
+  target_steering_angle = -max_steering_angle;
 }
 
 void Car::turn_right()
 {
-  angular_velocity = max_angular_velocity;
+  target_steering_angle = max_steering_angle;
 }
 
 void Car::stop_turn()
 {
-  angular_velocity = 0.0f;
+  target_steering_angle = 0;
 }
 
 vector<Wheel *> Car::get_wheels()

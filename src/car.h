@@ -51,13 +51,12 @@ private:
   // vel = m/s
   // ang_vel = rad/s
   const float max_acceleration = 20.0f;
-  const float min_reverse_acceleration = -3.0f;
-  const float max_angular_velocity = 1.50f;
-  const float min_turn_velocity = 1.0f;
+  const float min_reverse_acceleration = -10.0f;
+  const float steer_speed = 1.7f;        // radians per second
+  const float max_steering_angle = 0.7f; // radians
 
-  float velocity = 0.0f;
   float acceleration = 0.0f;
-  float angular_velocity = 0.0f;
+  float target_steering_angle = 0;
 
   std::vector<Wheel *> wheels = std::vector<Wheel *>(4, NULL);
   std::vector<b2RevoluteJoint *> front_wheel_joints;
