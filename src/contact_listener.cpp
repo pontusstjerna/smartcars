@@ -101,8 +101,7 @@ bool ContactListener::is_potential_lap(b2Body *body_a, b2Body *body_b, bool is_b
   goal_line_car_pos.Normalize();
 
   // Rotate 90 deg CCW
-  b2Vec2 goal_line_car_pos_rotated = b2Vec2(-goal_line_car_pos.y, goal_line_car_pos.x);
-
+  b2Vec2 goal_line_car_pos_rotated = goal_line_car_pos.Skew();
   /* Dot product > 0 is if vector is "in front of us", i.e. car vel is in front of goal line.
      By rotating the car's velocity 90 deg CCW we can calculate wether the vector is on the "right" or "left" side of goal line
   */

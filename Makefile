@@ -49,9 +49,6 @@ game: $(OBJ_FILES)
 	@echo Linking...
 	$(CC) $(CPPFLAGS) $(SYS_FLAGS) -g $^ $(LDFLAGS) -o $(BIN_DIR)/game
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/*/%.cpp
-	$(CC) -c $(CPPFLAGS) -o $@ -g $< $(IFLAGS)
-
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) -c $(CPPFLAGS) -o $@ -g $< $(IFLAGS)
 

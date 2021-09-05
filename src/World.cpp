@@ -6,7 +6,7 @@ World::World()
   b2Vec2 gravity(0.0f, 0.0f);
   phys_world = new b2World(gravity);
 
-  track = new Track("car_test", phys_world);
+  track = new Track("default", phys_world);
   cars = {new Car(2.2, 2.2, 0, phys_world, 0), new Car(5, 2.2, 0, phys_world, 1)};
 
   laps = vector<int>(cars.size(), 0);

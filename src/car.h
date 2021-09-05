@@ -50,10 +50,13 @@ private:
   // acc = m/s^2
   // vel = m/s
   // ang_vel = rad/s
-  const float max_acceleration = 20.0f;
-  const float min_reverse_acceleration = -10.0f;
-  const float steer_speed = 1.7f;        // radians per second
-  const float max_steering_angle = 0.7f; // radians
+  const float ANGULAR_DAMPING = 15;
+  const float LINEAR_DAMPING = 1;
+  const float MAX_ACCELERATION = 20.0f;
+  const float MIN_REVERSE_ACCELERATION = -10.0f;
+  const float STEER_SPEED = 2.0f;        // radians per second
+  const float MAX_STEERING_ANGLE = 0.6f; // radians
+  const float SKID_AMOUNT = 0.0f;        // how much of orthogonal velocity to keep
 
   float acceleration = 0.0f;
   float target_steering_angle = 0;
@@ -61,7 +64,7 @@ private:
   std::vector<Wheel *> wheels = std::vector<Wheel *>(4, NULL);
   std::vector<b2RevoluteJoint *> front_wheel_joints;
 
-  void kill_orthogonal_velocity(b2Body *target);
+  void reduce_orthogonal_velocity(b2Body *target);
 };
 
 #endif /* CAR */
