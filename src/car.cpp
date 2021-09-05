@@ -36,13 +36,13 @@ Car::Car(
     {
       b2RevoluteJointDef joint_def;
       b2Body *front_wheel_body = wheel->get_body();
-      joint_def.bodyA = body;
+      /*joint_def.bodyA = body;
       joint_def.bodyB = front_wheel_body;
       joint_def.lowerAngle = 0;
       joint_def.upperAngle = 0;
       joint_def.localAnchorA.Set(wheel_offsets[i].x, wheel_offsets[i].y);
-      joint_def.localAnchorB.SetZero();
-      //joint_def.Initialize(body, front_wheel_body, front_wheel_body->GetWorldCenter());
+      joint_def.localAnchorB.SetZero();*/
+      joint_def.Initialize(body, front_wheel_body, front_wheel_body->GetWorldCenter());
 
       // Turning motor
       joint_def.enableMotor = true;
@@ -86,7 +86,7 @@ void Car::update(float d_time)
       b2Body *wheel_body = wheel->get_body();
       float angle = wheel_body->GetAngle();
 
-      b2Vec2 force = b2Vec2(acceleration * sin(angle), acceleration * cos(angle));
+      b2Vec2 force = b2Vec2(acceleration * -sin(angle), acceleration * cos(angle));
       wheel_body->ApplyForce(force, wheel_body->GetPosition(), true);
     }
   }
@@ -138,7 +138,7 @@ void Car::kill_orthogonal_velocity(b2Body *target)
   b2Vec2 velocity = target->GetLinearVelocityFromLocalPoint(b2Vec2(0, 0));
 
   float angle = target->GetAngle();
-  b2Vec2 orthogonal_axis = b2Vec2(sin(angle), cos(angle));
+  b2Vec2 orthogonal_axis = b2Vec2(-sin(angle), cos(angle));
 
   // The dot product tells us how much of velocity is projected on orthogonal axis
   float orthogonal_velocity_mag = b2Dot(velocity, orthogonal_axis);
