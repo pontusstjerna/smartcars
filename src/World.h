@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <box2d/box2d.h>
+#include <functional>
 
 using namespace std;
 
@@ -25,6 +26,8 @@ public:
   float get_time(int car_index) const;
   bool all_finished() const;
   int get_winner_car_index() const;
+  void set_debug_draw(b2Draw *debug_view);
+  void update_debug_draw();
 
 private:
   b2World *phys_world;

@@ -4,6 +4,7 @@
 #include "world.h"
 #include "point.h"
 #include "gui_view.h"
+#include "debug_view.h"
 #include "SDL_utils.h"
 #include "dynamic_body.h"
 
@@ -16,7 +17,8 @@ public:
   ~View();
   void start();
   void init();
-  void update(int fps);
+  void update(int fps, function<void()> draw_debug);
+  DebugView *get_debug_view();
 
   const static int WIDTH = (int)(800 * 1.5f);
   const static int HEIGHT = (int)(600 * 1.5f);
@@ -27,6 +29,7 @@ private:
   World *world;
 
   GuiView *gui_view;
+  DebugView *debug_view;
 
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;

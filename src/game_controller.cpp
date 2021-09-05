@@ -52,6 +52,8 @@ void GameController::start_game()
     return;
   }
 
+  world->set_debug_draw(view->get_debug_view());
+
   run_game();
 }
 
@@ -77,7 +79,13 @@ void GameController::run_game()
     }
 
     world->update(d_time);
-    view->update(fps);
+    view->update(fps, [this]
+                 {
+                   if (is_debug)
+                   {
+                     world->update_debug_draw();
+                   }
+                 });
 
     SDL_Delay(10);
 

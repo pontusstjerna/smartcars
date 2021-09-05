@@ -93,3 +93,14 @@ int World::get_winner_car_index() const
 {
   return winner_car_index;
 }
+
+void World::set_debug_draw(b2Draw *debug_view)
+{
+  phys_world->SetDebugDraw(debug_view);
+  debug_view->SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit);
+}
+
+void World::update_debug_draw()
+{
+  phys_world->DebugDraw();
+}

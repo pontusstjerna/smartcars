@@ -17,6 +17,8 @@ private:
   View *view;
   InputController *input_controller;
 
+  bool is_debug = true;
+
   void run_game();
 };
 

@@ -26,6 +26,7 @@ View::View(World *world) : world(world)
 View::~View()
 {
   delete gui_view;
+  delete debug_view;
 
   SDL_DestroyTexture(car_texture.texture);
   SDL_DestroyTexture(wheel_texture.texture);
@@ -56,6 +57,8 @@ void View::init()
   gui_view = new GuiView(world, renderer);
   gui_view->init();
 
+  debug_view = new DebugView(renderer, scale);
+
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
   car_texture = load_texture(renderer, "car");
@@ -64,21 +67,29 @@ void View::init()
   track_segment_texture = load_texture(renderer, "track_segment");
 }
 
-void View::update(int fps)
+void View::update(int fps, function<void()> draw_debug)
 {
   SDL_SetRenderDrawColor(renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
 
   // Clear screen with above color
   SDL_RenderClear(renderer);
 
-  draw_track();
+  /*draw_track();
 
   draw_cars();
 
-  gui_view->render(fps);
+  gui_view->render(fps);*/
+
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+  draw_debug();
 
   // Render stuff on window
   SDL_RenderPresent(renderer);
+}
+
+DebugView *View::get_debug_view()
+{
+  return debug_view;
 }
 
 void View::draw_track()
