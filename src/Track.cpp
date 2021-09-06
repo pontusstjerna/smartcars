@@ -39,6 +39,16 @@ float Track::get_height()
   return height;
 }
 
+Point Track::get_car_start_pos(int car_index)
+{
+  return ((Point[]){Point(2.2, 2.2), Point(5, 2.2)})[car_index];
+}
+
+float Track::get_car_start_rot(int car_index)
+{
+  return 0;
+}
+
 void Track::create_track(string name, b2World *phys_world)
 {
   if (name == "default")

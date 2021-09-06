@@ -20,7 +20,7 @@ public:
     REAR_LEFT
   };
 
-  Car(float x, float y, float rot, b2World *phys_world, int index);
+  Car(Point start, float rot, b2World *phys_world, int index);
   ~Car();
 
   // 1.2 meter wide, 2 meters long
@@ -50,13 +50,13 @@ private:
   // acc = m/s^2
   // vel = m/s
   // ang_vel = rad/s
-  const float ANGULAR_DAMPING = 15;
-  const float LINEAR_DAMPING = 1;
+  const float ANGULAR_DAMPING = 1;
+  const float LINEAR_DAMPING = 2.5f;
   const float MAX_ACCELERATION = 20.0f;
   const float MIN_REVERSE_ACCELERATION = -10.0f;
   const float STEER_SPEED = 2.0f;        // radians per second
-  const float MAX_STEERING_ANGLE = 0.6f; // radians
-  const float SKID_AMOUNT = 0.0f;        // how much of orthogonal velocity to keep
+  const float MAX_STEERING_ANGLE = 0.5f; // radians
+  const float SKID_AMOUNT = 0.3f;        // how much of orthogonal velocity to keep
 
   float acceleration = 0.0f;
   float target_steering_angle = 0;

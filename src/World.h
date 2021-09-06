@@ -4,6 +4,7 @@
 #include "track.h"
 #include "car.h"
 #include "contact_listener.h"
+#include "car_controller.h"
 
 #include <vector>
 #include <box2d/box2d.h>
@@ -16,7 +17,7 @@ class World
 public:
   static const int max_laps = 1;
 
-  World();
+  World(vector<CarController *> car_controllers);
   ~World();
 
   void update(float d_time);

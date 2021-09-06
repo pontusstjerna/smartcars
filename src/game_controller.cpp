@@ -1,10 +1,13 @@
 #include "game_controller.h"
+#include "SDL_utils.h"
+#include "car_controller.h"
+
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#include "SDL_utils.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -36,7 +39,10 @@ void GameController::start_game()
     return;
   }
 
-  world = new World();
+  // TODO: Let user/args define number of car controllers etc
+  vector<CarController *> car_controllers = vector<CarController *>(2, new CarController());
+
+  world = new World(car_controllers);
   view = new View(world);
 
   // TODO: only get player controlled cars
@@ -55,6 +61,11 @@ void GameController::start_game()
   world->set_debug_draw(view->get_debug_view());
 
   run_game();
+
+  for (auto controller : car_controllers)
+  {
+    delete controller;
+  }
 }
 
 void GameController::run_game()

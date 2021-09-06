@@ -3,6 +3,7 @@
 
 #include "track_segment.h"
 #include "goal_line.h"
+#include "point.h"
 
 #include <vector>
 #include <string>
@@ -21,6 +22,9 @@ public:
   GoalLine *get_goal_line();
   float get_width();
   float get_height();
+
+  Point get_car_start_pos(int car_index);
+  float get_car_start_rot(int car_index);
 
 private:
   const float track_width = 6;

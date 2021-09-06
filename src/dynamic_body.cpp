@@ -39,3 +39,8 @@ float DynamicBody::get_rot()
 {
   return body->GetAngle() * (180 / M_PI);
 }
+
+float DynamicBody::get_velocity()
+{
+  return body->GetLinearVelocity().Length();
+}

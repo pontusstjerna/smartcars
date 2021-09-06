@@ -9,11 +9,10 @@
 using namespace std;
 
 Car::Car(
-    float x,
-    float y,
+    Point start,
     float rot,
     b2World *phys_world,
-    int index) : DynamicBody(x, y, WIDTH, LENGTH, rot, phys_world, BodyData(BodyType::CAR, index))
+    int index) : DynamicBody(start.x, start.y, WIDTH, LENGTH, rot, phys_world, BodyData(BodyType::CAR, index))
 {
   b2PolygonShape dynamic_box;
   dynamic_box.SetAsBox(WIDTH / 2.0f, LENGTH / 2.0f);
@@ -29,7 +28,7 @@ Car::Car(
 
   for (int i = 0; i < wheel_offsets.size(); i++)
   {
-    Wheel *wheel = new Wheel(x + wheel_offsets[i].x, y + wheel_offsets[i].y, rot, phys_world);
+    Wheel *wheel = new Wheel(start.x + wheel_offsets[i].x, start.y + wheel_offsets[i].y, rot, phys_world);
     wheels[i] = wheel;
 
     if (i == WheelPos::FRONT_LEFT || i == WheelPos::FRONT_RIGHT)

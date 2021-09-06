@@ -1,13 +1,20 @@
 #include "world.h"
 #include "contact_listener.h"
 
-World::World()
+World::World(vector<CarController *> car_controllers)
 {
   b2Vec2 gravity(0.0f, 0.0f);
   phys_world = new b2World(gravity);
 
   track = new Track("default", phys_world);
-  cars = {new Car(2.2, 2.2, 0, phys_world, 0), new Car(5, 2.2, 0, phys_world, 1)};
+
+  for (int i = 0; i < car_controllers.size(); i++)
+  {
+
+    Car *car = new Car(track->get_car_start_pos(i), track->get_car_start_rot(i), phys_world, i);
+    cars.push_back(car);
+    car_controllers[i]->set_car(car);
+  }
 
   laps = vector<int>(cars.size(), 0);
   car_times = vector<float>(cars.size(), 0);

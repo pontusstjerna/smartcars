@@ -23,6 +23,7 @@ public:
   float get_x();
   float get_y();
   float get_rot();
+  float get_velocity();
 
 protected:
   b2Body *body;
