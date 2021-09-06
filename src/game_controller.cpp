@@ -40,13 +40,17 @@ void GameController::start_game()
   }
 
   // TODO: Let user/args define number of car controllers etc
-  vector<CarController *> car_controllers = vector<CarController *>(2, new CarController());
+  vector<CarController *> car_controllers;
+  for (int i = 0; i < 2; i++)
+  {
+    car_controllers.push_back(new CarController());
+  }
 
   world = new World(car_controllers);
   view = new View(world);
 
   // TODO: only get player controlled cars
-  input_controller = new InputController(world->get_cars());
+  input_controller = new InputController(car_controllers);
 
   try
   {
@@ -62,7 +66,7 @@ void GameController::start_game()
 
   run_game();
 
-  for (auto controller : car_controllers)
+  for (CarController *controller : car_controllers)
   {
     delete controller;
   }

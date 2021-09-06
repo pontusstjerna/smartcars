@@ -21,7 +21,7 @@ public:
   void set_car(Car *car);
 
 private:
-  Car *car;
+  Car *car = NULL;
 };
 
 #endif /* CAR_CONTROLLER */

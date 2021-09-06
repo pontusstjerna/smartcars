@@ -10,10 +10,9 @@ World::World(vector<CarController *> car_controllers)
 
   for (int i = 0; i < car_controllers.size(); i++)
   {
-
     Car *car = new Car(track->get_car_start_pos(i), track->get_car_start_rot(i), phys_world, i);
-    cars.push_back(car);
     car_controllers[i]->set_car(car);
+    cars.push_back(car);
   }
 
   laps = vector<int>(cars.size(), 0);
